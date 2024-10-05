@@ -1,0 +1,10 @@
+.category {
+  height: 70px;
+  border-radius: 3%;
+}
+.category-title {
+  margin-left: 10px;
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 18px;
+}

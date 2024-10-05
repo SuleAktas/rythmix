@@ -1,0 +1,13 @@
+.search {
+}
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-left: 10px;
+}
+.category-list > * {
+  width: calc(50% - 10px);
+  margin-bottom: 10px;
+}
