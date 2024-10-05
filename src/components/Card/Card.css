@@ -1,0 +1,15 @@
+.card {
+  width: 152px;
+}
+.box {
+  width: 152px;
+  height: 152px;
+  background-color: white;
+  border-radius: 3%;
+}
+.box-title {
+  color: #ffffff;
+  font-family: "Helvetica Neue", serif;
+  font-size: 16px;
+  font-weight: 300;
+}
