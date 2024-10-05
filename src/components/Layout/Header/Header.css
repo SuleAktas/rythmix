@@ -1,0 +1,12 @@
+.header {
+  margin-top: 26px;
+  margin-left: 14px;
+  margin-right: 30px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+.header-title {
+  font-size: 16px;
+  font-weight: 700;
+}

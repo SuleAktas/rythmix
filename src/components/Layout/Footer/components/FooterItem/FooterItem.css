@@ -1,0 +1,13 @@
+.footer-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  min-width: 30px;
+}
+.icon-title {
+  font-size: 11px;
+  color: white;
+}
