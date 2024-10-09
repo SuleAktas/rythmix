@@ -8,6 +8,7 @@ function SearchPage() {
     <div className="search">
       <h2>Search</h2>
       <SearchInput />
+      <h3>Browse all</h3>
       <div className="category-list">
         <CategoryCard title={"Podcasts"} />
         <CategoryCard title={"Made For You"} />
