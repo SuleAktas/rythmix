@@ -3,21 +3,34 @@ import Footer from "../Layout/Footer/Footer";
 import Header from "../Layout/Header/Header";
 import SearchPage from "../SearchPage/SearchPage";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import PlaylistPage from "../PlaylistPage/PlaylistPage";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/search" element={<SearchPage />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <div className="App">
+      {location.pathname == "/" && <Header />}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/playlist" element={<PlaylistPage />} />
+      </Routes>
+      <Footer />
+    </div>
   );
 }
 
-export default App;
+export default function AppWrapper() {
+  return (
+    <Router>
+      <App />
+    </Router>
+  );
+}
