@@ -1,0 +1,19 @@
+.playlistpage-exp-container {
+  width: 100%;
+  background: linear-gradient(#0080ae 10%, #0080ae 10%, #121212 100%);
+}
+.playlist-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spotify-exp {
+  display: flex;
+  gap: 10px;
+}
+.playlist-exp p {
+  color: #b3b3b3;
+}
+.playlist-exp {
+  margin: 20px;
+}
