@@ -1,6 +1,17 @@
+.playlistpage-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+.playlistpage-box {
+  background: linear-gradient(#0080ae 10%, #0080ae 10%, #121212 100%);
+}
+.playlist-header {
+  margin: 20px;
+}
 .playlistpage-exp-container {
   width: 100%;
-  background: linear-gradient(#0080ae 10%, #0080ae 10%, #121212 100%);
 }
 .playlist-img {
   display: flex;
@@ -16,4 +27,21 @@
 }
 .playlist-exp {
   margin: 20px;
+}
+.playlist-actions {
+  /* display: flex;
+  gap: 10px; */
+}
+.playlist-buttons {
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.playlist-actions img {
+  margin-right: 20px;
+}
+
+.playlist-actions img:last-child {
+  margin-right: 0;
 }

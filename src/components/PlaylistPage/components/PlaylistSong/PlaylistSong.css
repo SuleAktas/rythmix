@@ -1,0 +1,5 @@
+.playlist-song-item {
+  padding: auto;
+  width: 100%;
+  display: flex;
+}
