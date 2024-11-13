@@ -8,7 +8,7 @@
   background: linear-gradient(#0080ae 10%, #0080ae 10%, #121212 100%);
 }
 .playlist-header {
-  margin: 20px;
+  padding: 20px;
 }
 .playlistpage-exp-container {
   width: 100%;
