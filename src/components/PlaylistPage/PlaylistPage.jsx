@@ -11,6 +11,15 @@ function PlaylistPage({ title, exp }) {
   const SHAREICON = process.env.PUBLIC_URL + "/images/SHAREICON.png";
   const PLAYICON = process.env.PUBLIC_URL + "/images/PLAYICON.png";
 
+  const songs = [
+    { order: 1, name: "Hymn For The Weekend", singer: "Coldplay" },
+    { order: 2, name: "Paradise", singer: "Coldplay" },
+    { order: 3, name: "Fix You", singer: "Coldplay" },
+    { order: 4, name: "Yellow", singer: "Coldplay" },
+    { order: 5, name: "Clocks", singer: "Coldplay" },
+    { order: 6, name: "My Universe", singer: "Coldplay" },
+    { order: 7, name: "Hymn For The Weekend", singer: "Coldplay" },
+  ];
   return (
     <div className="playlistpage-container">
       <div className="playlistpage-exp-container">
@@ -46,13 +55,15 @@ function PlaylistPage({ title, exp }) {
         </div>
       </div>
       <div className="playlist-songs">
-        <PlaylistSong />
-        <PlaylistSong />
-        <PlaylistSong />
-        <PlaylistSong />
-        <PlaylistSong />
-        <PlaylistSong />
-        <PlaylistSong />
+        {songs.map((song) => {
+          return (
+            <PlaylistSong
+              order={song.order}
+              title={song.name}
+              singer={song.singer}
+            />
+          );
+        })}
       </div>
     </div>
   );

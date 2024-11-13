@@ -2,4 +2,22 @@
   padding: auto;
   width: 100%;
   display: flex;
+  align-items: center;
+}
+.song-order {
+  margin: 20px;
+  width: 10%;
+}
+.song-exp {
+  width: 70%;
+}
+.song-title {
+  font-size: 18px;
+}
+.singer {
+  font-size: 15px;
+  color: #a7a7a7;
+}
+.song-actions {
+  margin-right: 5px;
 }
