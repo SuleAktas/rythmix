@@ -10,17 +10,19 @@ import {
   useLocation,
 } from "react-router-dom";
 import PlaylistPage from "../PlaylistPage/PlaylistPage";
+import Song from "../Song/Song";
 
 function App() {
   const location = useLocation();
 
   return (
     <div className="App">
-      {location.pathname == "/" && <Header />}
+      {location.pathname === "/" && <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/playlist" element={<PlaylistPage />} />
+        <Route path="/song" element={<Song />} />
       </Routes>
       <Footer />
     </div>
