@@ -1,6 +1,8 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import "./Song.css";
+import { useNavigate } from "react-router-dom";
 
 function Song() {
   const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
@@ -20,11 +22,23 @@ function Song() {
   const handleInputChange = (e) => {
     setProgress(e.target.value);
   };
+  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
+
+  const closeSong = () => {
+    setIsVisible(false);
+    navigate("/");
+  };
+  useEffect(() => {
+    setIsVisible(true);
+  }, [isVisible, navigate]);
 
   return (
-    <div className="song-container">
+    <div
+      className={`song-container song-container ${isVisible ? "slide-up" : ""}`}
+    >
       <div className="song-header">
-        <div className="song-down-icon">
+        <div className="song-down-icon" onClick={closeSong}>
           <img src={DOWNICON} alt="Coldplay"></img>
         </div>
         <div className="song-title">Coldplay</div>

@@ -1,0 +1,77 @@
+.song-player-container {
+  display: flex;
+  background-color: rgba(65, 10, 9, 1);
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  bottom: 70px;
+  opacity: 1;
+  padding-top: 10px;
+  justify-content: space-between;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+}
+.shuffle-again-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.song-player-image {
+  width: 55px;
+  height: 50px;
+  border-radius: 10px;
+}
+.song-player-image-box .song-player-about {
+  justify-content: space-between;
+}
+.song-player-actions {
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 10px;
+}
+.heart-icon {
+  width: 30px;
+  height: 30px;
+}
+.song-player-exp-box {
+  display: flex;
+  gap: 10px;
+}
+.play-icon {
+  width: 32px;
+  height: 32px;
+}
+.song-player-name {
+  margin-top: 7px;
+  font-size: 16px;
+  font-weight: 900;
+  font-family: Helvetica Neue;
+}
+
+.song-player-singer {
+  font-size: 16px;
+  font-family: Helvetica Neue;
+  color: #ffffff;
+}
+
+.component {
+  transition: all 0.3s ease-in-out;
+}
+.component.open {
+  transform: translateY(-100%);
+}
+
+.content {
+  display: none;
+  background-color: black;
+  color: white;
+  transition: all 0.5s ease-in-out;
+}
+
+.content.show {
+  display: block;
+  transform: translateY(0);
+  height: 100%;
+}

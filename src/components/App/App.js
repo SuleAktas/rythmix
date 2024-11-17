@@ -8,13 +8,22 @@ import {
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import PlaylistPage from "../PlaylistPage/PlaylistPage";
 import Song from "../Song/Song";
+import SongPlayer from "../SongPlayer/SongPlayer";
+import { useState } from "react";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [isSongPlayerOpen, setIsSongPlayerOpen] = useState(false);
 
+  const openSongPlayer = () => {
+    setIsSongPlayerOpen(true);
+    navigate("/song");
+  };
   return (
     <div className="App">
       {location.pathname === "/" && <Header />}
@@ -24,6 +33,9 @@ function App() {
         <Route path="/playlist" element={<PlaylistPage />} />
         <Route path="/song" element={<Song />} />
       </Routes>
+      {location.pathname !== "/song" && (
+        <SongPlayer openSongPlayer={openSongPlayer} />
+      )}
       {location.pathname !== "/song" && <Footer />}
     </div>
   );
