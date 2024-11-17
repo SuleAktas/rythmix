@@ -24,7 +24,7 @@ function App() {
         <Route path="/playlist" element={<PlaylistPage />} />
         <Route path="/song" element={<Song />} />
       </Routes>
-      <Footer />
+      {location.pathname !== "/song" && <Footer />}
     </div>
   );
 }
