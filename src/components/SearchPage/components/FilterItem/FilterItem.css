@@ -1,0 +1,16 @@
+.filter-box {
+  background-color: #3f3f3f;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: inline-block;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 30px 30px 30px 30px;
+}
+.selected {
+  background-color: #1ed760;
+  color: black;
+}

@@ -1,0 +1,15 @@
+.filters-container {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  padding: 8px;
+  gap: 10px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+.filters-container > * {
+  margin: 0;
+}
+.filters-container::-webkit-scrollbar {
+  display: none;
+}
