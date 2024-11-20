@@ -6,18 +6,21 @@
 }
 .song-order {
   margin: 20px;
-  width: 10%;
+  width: 12%;
 }
 .song-exp {
   width: 70%;
+  display: flex;
+  flex-direction: column;
 }
 .song-title {
-  font-size: 18px;
+  font-size: 18px !important;
+  margin-bottom: 10px;
 }
 .singer {
-  font-size: 15px;
+  font-size: 15px !important;
   color: #a7a7a7;
 }
 .song-actions {
-  margin-right: 5px;
+  margin-right: 5px !important;
 }

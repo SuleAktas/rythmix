@@ -1,15 +1,17 @@
 import React from "react";
 import "./PlaylistSong.css";
 
-function PlaylistSong({ order, title, singer }) {
+function PlaylistSong({ order, title, singer, img }) {
   const DETAILSICON = process.env.PUBLIC_URL + "/images/DETAILSICON.png";
 
   return (
     <div className="playlist-song-item">
-      <div className="song-order">{order}</div>
+      {order && <div className="song-order">{order}</div>}
+      {img && <img className="song-order" src={img} alt={title}></img>}
+
       <div className="song-exp">
-        <p className="song-title">{title}</p>
-        <p className="singer">{singer}</p>
+        <span className="song-title">{title}</span>
+        <span className="singer">{singer}</span>
       </div>
       <div className="song-actions">
         <img src={DETAILSICON} alt="details"></img>

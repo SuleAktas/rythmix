@@ -10,6 +10,7 @@
   justify-content: space-between;
   border-radius: 10px;
   transition: all 0.3s ease-in-out;
+  z-index: 100;
 }
 .shuffle-again-icon {
   width: 24px;
