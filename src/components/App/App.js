@@ -14,6 +14,7 @@ import PlaylistPage from "../PlaylistPage/PlaylistPage";
 import Song from "../Song/Song";
 import SongPlayer from "../SongPlayer/SongPlayer";
 import { useState } from "react";
+import { SongProvider } from "../../contexts/SongContext";
 
 function App() {
   const location = useLocation();
@@ -22,22 +23,24 @@ function App() {
 
   const openSongPlayer = () => {
     setIsSongPlayerOpen(true);
-    navigate("/song");
+    navigate("/song", { state: { from: window.location.pathname } });
   };
   return (
-    <div className="App">
-      {location.pathname === "/" && <Header />}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/playlist" element={<PlaylistPage />} />
-        <Route path="/song" element={<Song />} />
-      </Routes>
-      {location.pathname !== "/song" && (
-        <SongPlayer openSongPlayer={openSongPlayer} />
-      )}
-      {location.pathname !== "/song" && <Footer />}
-    </div>
+    <SongProvider>
+      <div className="App">
+        {location.pathname === "/" && <Header />}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/playlist" element={<PlaylistPage />} />
+          <Route path="/song" element={<Song />} />
+        </Routes>
+        {location.pathname !== "/song" && (
+          <SongPlayer openSongPlayer={openSongPlayer} />
+        )}
+        {location.pathname !== "/song" && <Footer />}
+      </div>
+    </SongProvider>
   );
 }
 
