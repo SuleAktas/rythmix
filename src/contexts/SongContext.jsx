@@ -15,7 +15,6 @@ export const SongProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use the context
 export const useSong = () => {
   return useContext(SongContext);
 };
