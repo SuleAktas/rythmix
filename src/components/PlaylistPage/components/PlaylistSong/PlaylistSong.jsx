@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import "./PlaylistSong.css";
 import { useSong } from "../../../../contexts/SongContext";
-import AboutSong from "../AboutSong/AboutSong";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function PlaylistSong({ order, title, singer, img }) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { setSong } = useSong();
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [isPlaylist, setIsPlaylist] = useState(false);
 
   const handlePlaySong = () => {
-    setSong({ name: title, singer: singer });
+    if (location.pathname !== "/library")
+      setSong({ name: title, singer: singer });
+    else navigate("/playlist", { state: { from: window.location.pathname } });
   };
-
-  const handleMoreClick = () => {
-    setIsMoreOpen((prev) => !prev);
-  };
+  const handlePlaylistAddClick = () => {};
 
   return (
     <div className="playlist-song-item" onClick={handlePlaySong}>
@@ -25,11 +27,11 @@ function PlaylistSong({ order, title, singer, img }) {
         <span className="song-title">{title}</span>
         <span className="singer">{singer}</span>
       </div>
-      <div className="actions">
-        <MoreVertIcon onClick={handleMoreClick} />
-      </div>
-
-      <AboutSong isOpen={isMoreOpen} name={title} singer={singer} img={img} />
+      {location.pathname !== "/library" && (
+        <div className="actions">
+          <PlaylistAddIcon onClick={handlePlaylistAddClick} />
+        </div>
+      )}
     </div>
   );
 }
