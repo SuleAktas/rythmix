@@ -1,20 +1,13 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect } from "react";
 import "./SongPlayer.css";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useSong } from "../../contexts/SongContext";
 
 function SongPlayer({ openSongPlayer }) {
   const SONG_PIC = process.env.PUBLIC_URL + "/images/COLDPLAY.png";
-  const SONGPLAYICON = process.env.PUBLIC_URL + "/images/SONGPLAYICON.png";
-  const HEARTICON = process.env.PUBLIC_URL + "/images/HEARTICON.png";
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSlide = () => {
-    setIsOpen(!isOpen);
-  };
-
+  const { song } = useSong();
   return (
-    // <div className={`component ${isOpen ? "open" : ""}`} onClick={toggleSlide}>
     <div className="song-player-container" onClick={openSongPlayer}>
       <div className="song-player-exp-box">
         <div className="song-player-image-box">
@@ -25,19 +18,15 @@ function SongPlayer({ openSongPlayer }) {
           ></img>
         </div>
         <div className="song-player-about">
-          <div className="song-player-name">Yellow </div>
-          <div className="song-player-singer">Coldplay</div>
+          <div className="song-player-name">{song.name} </div>
+          <div className="song-player-singer">{song.singer}</div>
         </div>
       </div>
       <div className="song-player-actions">
-        <img className="heart-icon" src={HEARTICON} alt="Coldplay"></img>
-        <img className="play-icon" src={SONGPLAYICON} alt="Coldplay"></img>
+        <FavoriteBorderIcon fontSize="large"></FavoriteBorderIcon>
+        <PlayArrowIcon fontSize="large"></PlayArrowIcon>
       </div>
     </div>
-    /* <div className={`content ${isOpen ? "show" : ""}`}>
-        <Song />
-      </div> */
-    // </div>
   );
 }
 
