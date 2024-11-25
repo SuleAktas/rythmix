@@ -13,16 +13,14 @@ import {
 import PlaylistPage from "../PlaylistPage/PlaylistPage";
 import Song from "../Song/Song";
 import SongPlayer from "../SongPlayer/SongPlayer";
-import { useState } from "react";
 import { SongProvider } from "../../contexts/SongContext";
+import LibraryPage from "../LibraryPage/LibraryPage";
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isSongPlayerOpen, setIsSongPlayerOpen] = useState(false);
 
   const openSongPlayer = () => {
-    setIsSongPlayerOpen(true);
     navigate("/song", { state: { from: window.location.pathname } });
   };
   return (
@@ -34,6 +32,7 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/playlist" element={<PlaylistPage />} />
           <Route path="/song" element={<Song />} />
+          <Route path="/library" element={<LibraryPage />} />
         </Routes>
         {location.pathname !== "/song" && (
           <SongPlayer openSongPlayer={openSongPlayer} />
