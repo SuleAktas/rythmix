@@ -1,10 +1,10 @@
 import React from "react";
 import "./FooterItem.css";
 
-function FooterItem({ img, title, onClick }) {
+function FooterItem({ icon, title, onClick }) {
   return (
     <div className="footer-item" onClick={onClick}>
-      <img src={img} alt={title}></img>
+      {icon}
       <div className="icon-title">{title}</div>
     </div>
   );

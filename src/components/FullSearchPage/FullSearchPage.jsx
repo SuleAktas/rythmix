@@ -2,10 +2,10 @@ import React from "react";
 import PlaylistSong from "../PlaylistPage/components/PlaylistSong/PlaylistSong";
 import Filters from "../SearchPage/components/Filters/Filters";
 import SearchInput from "../SearchPage/components/SearchInput/SearchInput";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./FullSearchPage.css";
 
 function FullSearchPage({ onClose }) {
-  const BACKICON = process.env.PUBLIC_URL + "/images/BACKICON.png";
   const SCIENTIST = process.env.PUBLIC_URL + "/images/SCIENTIST.png";
 
   const songs = [
@@ -24,12 +24,7 @@ function FullSearchPage({ onClose }) {
   return (
     <div className="full-search-container">
       <div className="search-header">
-        <img
-          className="back-icon"
-          src={BACKICON}
-          alt={"backicon"}
-          onClick={onClose}
-        ></img>
+        <ArrowBackIcon className="back-icon" onClick={onClose} />
         <SearchInput fullPage={true}></SearchInput>
       </div>
       <div className="filters">

@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import PlaylistSong from "./components/PlaylistSong/PlaylistSong";
 import "./PlaylistPage.css";
+import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
+import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 
 function PlaylistPage({ title, exp }) {
   const DAILYMIX4 = process.env.PUBLIC_URL + "/images/DAILYMIX4.png";
@@ -20,12 +23,30 @@ function PlaylistPage({ title, exp }) {
     { order: 6, name: "My Universe", singer: "Coldplay" },
     { order: 7, name: "Hymn For The Weekend", singer: "Coldplay" },
   ];
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const previousPage = location.state?.from || "/";
+
+  const handleNavigatePreviousPage = () => {
+    console.log(location.state?.from);
+    navigate(previousPage, { state: { from: window.location.pathname } });
+  };
+
+  const [songStatus, setSongStatus] = useState(false);
+  const handleSongStatus = () => {
+    setSongStatus(!songStatus);
+  };
   return (
     <div className="playlistpage-container">
       <div className="playlistpage-exp-container">
         <div className="playlistpage-box">
           <div className="playlist-header">
-            <img src={BACKICON} alt={title}></img>
+            <img
+              src={BACKICON}
+              alt={title}
+              onClick={handleNavigatePreviousPage}
+            ></img>
           </div>
           <div className="playlist-img">
             <img src={DAILYMIX4} alt={title}></img>
@@ -50,7 +71,25 @@ function PlaylistPage({ title, exp }) {
           </div>
 
           <div className="playlist-play">
-            <img src={PLAYICON} alt={title}></img>
+            {songStatus && (
+              <PlayCircleFilledIcon
+                sx={{
+                  color: "#1ED760",
+                  padding: "4px",
+                  fontSize: 70,
+                }}
+                onClick={handleSongStatus}
+              />
+            )}
+            {!songStatus && (
+              <PauseCircleFilledIcon
+                sx={{
+                  color: "#1ED760",
+                  fontSize: 70,
+                }}
+                onClick={handleSongStatus}
+              />
+            )}
           </div>
         </div>
       </div>

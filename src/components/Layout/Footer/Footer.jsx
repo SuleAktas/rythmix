@@ -1,14 +1,13 @@
 import React from "react";
 import FooterItem from "./components/FooterItem/FooterItem";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import { useNavigate } from "react-router-dom";
 import "./Footer.css";
 
 function Footer() {
   const navigate = useNavigate();
-  const HOMEICON = process.env.PUBLIC_URL + "/images/HOMEICON.png";
-  const LIBRARYICON = process.env.PUBLIC_URL + "/images/LIBRARYICON.png";
-  const PREMIUMICON = process.env.PUBLIC_URL + "/images/PREMIUMICON.png";
-  const SEARCHICON = process.env.PUBLIC_URL + "/images/SEARCHICON.png";
 
   const handleNavigate = (route) => {
     navigate(route);
@@ -16,24 +15,19 @@ function Footer() {
   return (
     <div className="footer">
       <FooterItem
-        img={HOMEICON}
+        icon={<HomeOutlinedIcon sx={{ fontSize: 30 }} />}
         title="Home"
         onClick={() => handleNavigate("/")}
       />
       <FooterItem
-        img={SEARCHICON}
+        icon={<SearchOutlinedIcon sx={{ fontSize: 30 }} />}
         title="Search"
         onClick={() => handleNavigate("/search")}
       />
       <FooterItem
-        img={LIBRARYICON}
+        icon={<LibraryMusicIcon sx={{ fontSize: 30 }} />}
         title="Library"
         onClick={() => handleNavigate("/library")}
-      />
-      <FooterItem
-        img={PREMIUMICON}
-        title="Premium"
-        onClick={() => handleNavigate("/premium")}
       />
     </div>
   );
