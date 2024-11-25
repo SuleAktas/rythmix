@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 55%;
+  height: 50%;
 }
 .song-about {
   display: flex;
@@ -73,7 +73,7 @@
   justify-content: space-between;
 }
 .song-progress-bar {
-  margin: 20px;
+  margin: 40px 20px 10px 20px;
   margin-top: 40px;
   width: 93%;
   position: relative;
@@ -111,4 +111,49 @@ progress::-webkit-progress-value {
   border-radius: 50%;
   pointer-events: none;
   transition: left 0.2s ease;
+}
+.song-time {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 20px 20px 20px;
+  font-size: 12px;
+}
+
+.custom-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #a7a7a7;
+  border-radius: 5px;
+  outline: none;
+  position: relative;
+  transition: background-color 0.2s ease;
+  background-color: #a7a7a7;
+}
+
+.custom-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  color: white;
+  border-radius: 5px;
+  -webkit-appearance: none;
+}
+
+.custom-range::-webkit-slider-progress {
+  background: #fff;
+  height: 4px;
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  top: -4px;
+  transition: background-color 0.2s ease;
 }
