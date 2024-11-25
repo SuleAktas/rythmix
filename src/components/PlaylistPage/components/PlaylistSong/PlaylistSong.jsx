@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import "./PlaylistSong.css";
 import { useSong } from "../../../../contexts/SongContext";
@@ -9,8 +8,6 @@ function PlaylistSong({ order, title, singer, img }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { setSong } = useSong();
-  const [isPlaylist, setIsPlaylist] = useState(false);
-
   const handlePlaySong = () => {
     if (location.pathname !== "/library")
       setSong({ name: title, singer: singer });
