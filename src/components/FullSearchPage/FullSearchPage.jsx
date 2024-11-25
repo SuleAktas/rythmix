@@ -35,7 +35,7 @@ function FullSearchPage({ onClose }) {
           return (
             <PlaylistSong
               img={song.img}
-              title={song.name}
+              name={song.name}
               singer={song.singer}
             />
           );

@@ -10,7 +10,7 @@ function LibraryPage() {
       <LibraryHeader></LibraryHeader>
       <PlaylistSong
         img={LIKEDSONGS}
-        title="Beğenilen Şarkılar"
+        name="Beğenilen Şarkılar"
         singer="Çalma Listesi"
       />
     </div>
