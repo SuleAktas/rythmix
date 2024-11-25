@@ -4,6 +4,7 @@ import PlaylistSong from "./components/PlaylistSong/PlaylistSong";
 import "./PlaylistPage.css";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
+import { useSongApi } from "../../contexts/SongApiContext";
 
 function PlaylistPage({ title, exp }) {
   const DAILYMIX4 = process.env.PUBLIC_URL + "/images/DAILYMIX4.png";
@@ -37,6 +38,17 @@ function PlaylistPage({ title, exp }) {
   const handleSongStatus = () => {
     setSongStatus(!songStatus);
   };
+  const { tracks, loading, error, fetchTracks } = useSongApi();
+  const [tag, setTag] = useState("rock");
+
+  const handleTagChange = (newTag) => {
+    setTag(newTag);
+    fetchTracks(newTag);
+  };
+
+  if (loading) return <p>Loading tracks...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <div className="playlistpage-container">
       <div className="playlistpage-exp-container">
@@ -94,15 +106,16 @@ function PlaylistPage({ title, exp }) {
         </div>
       </div>
       <div className="playlist-songs">
-        {songs.map((song) => {
-          return (
+        {!loading &&
+          tracks.map((track, index) => (
             <PlaylistSong
-              order={song.order}
-              title={song.name}
-              singer={song.singer}
+              key={track.id}
+              order={index + 1}
+              name={track.name}
+              singer={track.artist_name}
+              img={track.image}
             />
-          );
-        })}
+          ))}
       </div>
     </div>
   );
