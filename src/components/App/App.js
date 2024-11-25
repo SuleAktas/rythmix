@@ -13,8 +13,8 @@ import {
 import PlaylistPage from "../PlaylistPage/PlaylistPage";
 import Song from "../Song/Song";
 import SongPlayer from "../SongPlayer/SongPlayer";
-import { SongProvider } from "../../contexts/SongContext";
 import LibraryPage from "../LibraryPage/LibraryPage";
+import { AppProvider } from "../../providers/AppProvider";
 
 function App() {
   const location = useLocation();
@@ -24,7 +24,7 @@ function App() {
     navigate("/song", { state: { from: window.location.pathname } });
   };
   return (
-    <SongProvider>
+    <AppProvider>
       <div className="App">
         {location.pathname === "/" && <Header />}
         <Routes>
@@ -39,7 +39,7 @@ function App() {
         )}
         {location.pathname !== "/song" && <Footer />}
       </div>
-    </SongProvider>
+    </AppProvider>
   );
 }
 
