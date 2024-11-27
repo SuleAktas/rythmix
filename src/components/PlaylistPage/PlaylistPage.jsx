@@ -6,24 +6,13 @@ import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { useSongApi } from "../../contexts/SongApiContext";
 
-function PlaylistPage({ title, exp }) {
+function PlaylistPage({ title }) {
   const DAILYMIX4 = process.env.PUBLIC_URL + "/images/DAILYMIX4.png";
   const SPOTIFYLOGO = process.env.PUBLIC_URL + "/images/SPOTIFYLOGO.png";
   const BACKICON = process.env.PUBLIC_URL + "/images/BACKICON.png";
   const HEARTICON = process.env.PUBLIC_URL + "/images/HEARTICON.png";
   const DETAILSICON = process.env.PUBLIC_URL + "/images/DETAILSICON.png";
   const SHAREICON = process.env.PUBLIC_URL + "/images/SHAREICON.png";
-  const PLAYICON = process.env.PUBLIC_URL + "/images/PLAYICON.png";
-
-  const songs = [
-    { order: 1, name: "Hymn For The Weekend", singer: "Coldplay" },
-    { order: 2, name: "Paradise", singer: "Coldplay" },
-    { order: 3, name: "Fix You", singer: "Coldplay" },
-    { order: 4, name: "Yellow", singer: "Coldplay" },
-    { order: 5, name: "Clocks", singer: "Coldplay" },
-    { order: 6, name: "My Universe", singer: "Coldplay" },
-    { order: 7, name: "Hymn For The Weekend", singer: "Coldplay" },
-  ];
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,7 +23,7 @@ function PlaylistPage({ title, exp }) {
     navigate(previousPage, { state: { from: window.location.pathname } });
   };
 
-  const [songStatus, setSongStatus] = useState(false);
+  const [songStatus, setSongStatus] = useState(true);
   const handleSongStatus = () => {
     setSongStatus(!songStatus);
   };
@@ -108,13 +97,7 @@ function PlaylistPage({ title, exp }) {
       <div className="playlist-songs">
         {!loading &&
           tracks.map((track, index) => (
-            <PlaylistSong
-              key={track.id}
-              order={index + 1}
-              name={track.name}
-              singer={track.artist_name}
-              img={track.image}
-            />
+            <PlaylistSong key={track.id} order={index + 1} song={track} />
           ))}
       </div>
     </div>

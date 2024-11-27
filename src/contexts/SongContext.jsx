@@ -4,8 +4,17 @@ const SongContext = createContext();
 
 export const SongProvider = ({ children }) => {
   const [song, setSong] = useState({
+    id: "",
     name: "",
+    duration: "",
+    artist_id: "",
+    artist_name: "",
+    album_name: "",
+    album_id: "",
     singer: "",
+    album_image: "",
+    audio: "",
+    image: "",
   });
 
   return (
