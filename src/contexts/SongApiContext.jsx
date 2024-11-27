@@ -14,9 +14,7 @@ export const SongApiProvider = ({ children }) => {
       const response = await fetch(
         `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&limit=10&tags=${tags}`
       );
-      debugger;
       const data = await response.json();
-      debugger;
       setTracks(data.results);
     } catch (err) {
       setError("Error fetching tracks");
