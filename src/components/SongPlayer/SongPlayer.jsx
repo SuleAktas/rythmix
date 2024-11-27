@@ -14,7 +14,6 @@ function SongPlayer({ openSongPlayer }) {
   const handlePlaylistAddClick = (e) => {
     e.stopPropagation();
     if (!likedSongs.some((songPrev) => songPrev.name === song.name)) {
-      debugger;
       setLikedSongs((prev) => [
         ...prev,
         { name: song.name, singer: song.singer, img: song.img },
@@ -23,7 +22,6 @@ function SongPlayer({ openSongPlayer }) {
   };
   const handlePlaylistRemoveClick = (e) => {
     e.stopPropagation();
-    debugger;
     setLikedSongs((prev) =>
       prev.filter((songPrev) => songPrev.name !== song.name)
     );
@@ -44,7 +42,7 @@ function SongPlayer({ openSongPlayer }) {
           </div>
           <div className="song-player-about">
             <div className="song-player-name">{song.name} </div>
-            <div className="song-player-singer">{song.singer}</div>
+            <div className="song-player-singer">{song.artist_name}</div>
           </div>
         </div>
         <div className="song-player-actions">
