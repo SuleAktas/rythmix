@@ -6,37 +6,38 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useLikedSongs } from "../../../../contexts/LikedSongContext";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 
-function PlaylistSong({ order, name, singer, img }) {
+function PlaylistSong({ order, song }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { setSong } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const handlePlaySong = () => {
-    if (location.pathname !== "/library")
-      setSong({ name: name, singer: singer });
+    if (location.pathname !== "/library") setSong(song);
     else navigate("/playlist", { state: { from: window.location.pathname } });
   };
   const handlePlaylistAddClick = (e) => {
     e.stopPropagation();
-    if (!likedSongs.some((song) => song.name === name)) {
-      setLikedSongs((prev) => [...prev, { name, singer, img }]);
+    if (!likedSongs.some((songPrev) => songPrev.id === song.id)) {
+      setLikedSongs((prev) => [...prev, { song }]);
     }
   };
   const handlePlaylistRemoveClick = (e) => {
     e.stopPropagation();
-    setLikedSongs((prev) => prev.filter((songPrev) => songPrev.name !== name));
+    setLikedSongs((prev) => prev.filter((songPrev) => songPrev.id !== song.id));
   };
 
-  const isLiked = likedSongs.some((song) => song.name === name);
+  const isLiked = likedSongs.some((songPrev) => songPrev.id === song.id);
 
   return (
     <div className="playlist-song-item" onClick={handlePlaySong}>
       {order && <div className="song-order">{order}</div>}
-      {img && <img className="song-order" src={img} alt={name}></img>}
+      {song.image && location.pathname !== "/playlist" && (
+        <img className="song-order" src={song.image} alt={song.name}></img>
+      )}
 
       <div className="song-exp">
-        <span className="song-title">{name}</span>
-        <span className="singer">{singer}</span>
+        <span className="song-title">{song.name}</span>
+        <span className="singer">{song.artist_name}</span>
       </div>
       {location.pathname !== "/library" && (
         <div className="actions">
@@ -47,7 +48,7 @@ function PlaylistSong({ order, name, singer, img }) {
             />
           ) : (
             <PlaylistAddIcon onClick={handlePlaylistAddClick} />
-          )}{" "}
+          )}
         </div>
       )}
     </div>
