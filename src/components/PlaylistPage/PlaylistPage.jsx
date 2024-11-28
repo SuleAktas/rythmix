@@ -6,6 +6,7 @@ import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import { useSongApi } from "../../contexts/SongApiContext";
 import { useLikedPlaylists } from "../../contexts/LikedPlaylistContext";
+import { usePlaylist } from "../../contexts/PlaylistContext";
 
 function PlaylistPage({ title }) {
   const SPOTIFYLOGO = process.env.PUBLIC_URL + "/images/SPOTIFYLOGO.png";
@@ -20,8 +21,7 @@ function PlaylistPage({ title }) {
   const { setLikedPlaylists } = useLikedPlaylists();
   const [songStatus, setSongStatus] = useState(true);
   const previousPage = location.state?.from || "/";
-  const album = location.state?.data;
-
+  const { album } = usePlaylist();
   const handleNavigatePreviousPage = () => {
     console.log(location.state?.from);
     navigate(previousPage, { state: { from: window.location.pathname } });
@@ -36,16 +36,18 @@ function PlaylistPage({ title }) {
   };
 
   useEffect(() => {
-    const fetchSongs = async () => {
-      const response = await fetch(
-        `https://api.jamendo.com/v3.0/tracks/?client_id=99c16ea4&album_id=${album.id}`
-      );
-      const data = await response.json();
-      setTracks(data.results);
-    };
+    if (album) {
+      const fetchSongs = async () => {
+        const response = await fetch(
+          `https://api.jamendo.com/v3.0/tracks/?client_id=99c16ea4&album_id=${album.id}`
+        );
+        const data = await response.json();
+        setTracks(data.results);
+      };
 
-    fetchSongs();
-  }, [album.id]);
+      fetchSongs();
+    }
+  }, [album]);
 
   if (loading) return <p>Loading tracks...</p>;
   if (error) return <p>{error}</p>;

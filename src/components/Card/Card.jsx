@@ -1,13 +1,17 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { usePlaylist } from "../../contexts/PlaylistContext";
 import "./Card.css";
 
 function Card({ album }) {
   const navigate = useNavigate();
+  const { setPlaylist } = usePlaylist();
 
   const handleCardClick = () => {
+    setPlaylist(album);
+
     navigate(`/playlist`, {
-      state: { data: album, from: window.location.pathname },
+      state: { from: window.location.pathname },
     });
   };
 
