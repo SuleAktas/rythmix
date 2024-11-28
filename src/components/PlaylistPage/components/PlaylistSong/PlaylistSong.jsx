@@ -13,12 +13,15 @@ function PlaylistSong({ order, song }) {
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const handlePlaySong = () => {
     if (location.pathname !== "/library") setSong(song);
-    else navigate("/playlist", { state: { from: window.location.pathname } });
+    else
+      navigate("/playlist", {
+        state: { data: song, from: window.location.pathname },
+      });
   };
   const handlePlaylistAddClick = (e) => {
     e.stopPropagation();
     if (!likedSongs.some((songPrev) => songPrev.id === song.id)) {
-      setLikedSongs((prev) => [...prev, { song }]);
+      setLikedSongs((prev) => [...prev, song]);
     }
   };
   const handlePlaylistRemoveClick = (e) => {
