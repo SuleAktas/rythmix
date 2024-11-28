@@ -11,6 +11,9 @@ import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { useSong } from "../../contexts/SongContext";
 import { useRef } from "react";
+import { useLikedSongs } from "../../contexts/LikedSongContext";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 function Song() {
   const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
   const MOREICON = process.env.PUBLIC_URL + "/images/MOREICON.png";
@@ -19,6 +22,7 @@ function Song() {
   const SHUFFLEICON = process.env.PUBLIC_URL + "/images/SHUFFLEICON.png";
 
   const { song } = useSong();
+  const { likedSongs, setLikedSongs } = useLikedSongs();
   const [songStatus, setSongStatus] = useState(true);
   const [songDuration, setSongDuration] = useState(song.duration);
   const [songRemainingTime, setSongRemainingTime] = useState(song.duration);
@@ -29,6 +33,15 @@ function Song() {
   const previousPage = location.state?.from || "/";
 
   const audioRef = useRef(null);
+  const isLiked = likedSongs.some((songPrev) => songPrev.id === song.id);
+  const handlePlaylistAddClick = () => {
+    if (!likedSongs.some((songPrev) => songPrev.id === song.id)) {
+      setLikedSongs((prev) => [...prev, song]);
+    }
+  };
+  const handlePlaylistRemoveClick = (e) => {
+    setLikedSongs((prev) => prev.filter((songPrev) => songPrev.id !== song.id));
+  };
 
   const handleSongStatus = () => {
     setSongStatus((prev) => !prev);
@@ -110,7 +123,17 @@ function Song() {
         <div className="song-name">{song.name} </div>
         <div className="song-singer">{song.artist_name}</div>
         <div className="song-like">
-          <img src={HEARTICON} alt="Coldplay"></img>
+          {isLiked ? (
+            <FavoriteIcon
+              fontSize="large"
+              onClick={handlePlaylistRemoveClick}
+            ></FavoriteIcon>
+          ) : (
+            <FavoriteBorderIcon
+              fontSize="large"
+              onClick={handlePlaylistAddClick}
+            ></FavoriteBorderIcon>
+          )}
         </div>
       </div>
       <div className="song-progress-bar">

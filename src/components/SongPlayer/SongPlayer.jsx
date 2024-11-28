@@ -14,10 +14,7 @@ function SongPlayer({ openSongPlayer }) {
   const handlePlaylistAddClick = (e) => {
     e.stopPropagation();
     if (!likedSongs.some((songPrev) => songPrev.name === song.name)) {
-      setLikedSongs((prev) => [
-        ...prev,
-        { name: song.name, singer: song.singer, img: song.img },
-      ]);
+      setLikedSongs((prev) => [...prev, song]);
     }
   };
   const handlePlaylistRemoveClick = (e) => {
