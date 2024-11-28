@@ -1,18 +1,18 @@
 import React from "react";
 import "./Slider.css";
 import Card from "../Card/Card";
+import { useSongApi } from "../../contexts/SongApiContext";
 
 function Slider({ title }) {
-  const DAILYMIX4 = process.env.PUBLIC_URL + "/images/DAILYMIX4.png";
+  const { albums } = useSongApi();
 
   return (
     <div className="slider">
       <div className="slider-title">{title}</div>
       <div className="slider-container">
-        <Card img={DAILYMIX4} title="Daily Mix 4" />
-        <Card img={DAILYMIX4} title="Daily Mix 4" />
-        <Card img={DAILYMIX4} title="Daily Mix 4" />
-        <Card img={DAILYMIX4} title="Daily Mix 4" />
+        {albums.map((album, index) => (
+          <Card key={index} album={album} />
+        ))}
       </div>
     </div>
   );
