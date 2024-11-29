@@ -17,7 +17,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 function Song() {
   const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
   const MOREICON = process.env.PUBLIC_URL + "/images/MOREICON.png";
-  const HEARTICON = process.env.PUBLIC_URL + "/images/HEARTICON.png";
   const AGAINICON = process.env.PUBLIC_URL + "/images/AGAINICON.png";
   const SHUFFLEICON = process.env.PUBLIC_URL + "/images/SHUFFLEICON.png";
 
@@ -107,7 +106,7 @@ function Song() {
     >
       <audio ref={audioRef} src={song.audio} />
       <div className="song-header">
-        <div className="song-down-icon" onClick={closeSong}>
+        <div className="song-down-icon" onClick={() => navigate(-1)}>
           <img src={DOWNICON} alt="Coldplay"></img>
         </div>
         <div className="song-title">{song.artist_name}</div>

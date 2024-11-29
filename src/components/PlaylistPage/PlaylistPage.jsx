@@ -20,12 +20,7 @@ function PlaylistPage({ title }) {
   const { tracks, loading, error, setTracks } = useSongApi();
   const { setLikedPlaylists } = useLikedPlaylists();
   const [songStatus, setSongStatus] = useState(true);
-  const previousPage = location.state?.from || "/";
   const { album } = usePlaylist();
-  const handleNavigatePreviousPage = () => {
-    console.log(location.state?.from);
-    navigate(previousPage, { state: { from: window.location.pathname } });
-  };
 
   const handleSongStatus = () => {
     setSongStatus(!songStatus);
@@ -57,11 +52,7 @@ function PlaylistPage({ title }) {
       <div className="playlistpage-exp-container">
         <div className="playlistpage-box">
           <div className="playlist-header">
-            <img
-              src={BACKICON}
-              alt={title}
-              onClick={handleNavigatePreviousPage}
-            ></img>
+            <img src={BACKICON} alt={title} onClick={() => navigate(-1)}></img>
           </div>
           <div className="playlist-img">
             <img src={tracks[0].album_image} alt={title}></img>
