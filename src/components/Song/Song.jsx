@@ -1,19 +1,19 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import DevicesIcon from "@mui/icons-material/Devices";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import "./Song.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
-import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { useSong } from "../../contexts/SongContext";
 import { useRef } from "react";
 import { useLikedSongs } from "../../contexts/LikedSongContext";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteIcon from "../SVG/FavoriteIcon";
+import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
+import DevicesIcon from "../SVG/DevicesIcon";
+import ShareIcon from "../SVG/ShareIcon";
+import FilledPlayIcon from "../SVG/FilledPlayIcon";
+import FilledPauseIcon from "../SVG/FilledPauseIcon";
+import SkipNextIcon from "../SVG/SkipNextIcon";
+import SkipPreviousIcon from "../SVG/SkipPreviousIcon";
 function Song() {
   const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
   const MOREICON = process.env.PUBLIC_URL + "/images/MOREICON.png";
@@ -122,17 +122,7 @@ function Song() {
         <div className="song-name">{song.name} </div>
         <div className="song-singer">{song.artist_name}</div>
         <div className="song-like">
-          {isLiked ? (
-            <FavoriteIcon
-              fontSize="large"
-              onClick={handlePlaylistRemoveClick}
-            ></FavoriteIcon>
-          ) : (
-            <FavoriteBorderIcon
-              fontSize="large"
-              onClick={handlePlaylistAddClick}
-            ></FavoriteBorderIcon>
-          )}
+          {isLiked ? <FilledFavoriteIcon /> : <FavoriteIcon />}
         </div>
       </div>
       <div className="song-progress-bar">
@@ -158,42 +148,13 @@ function Song() {
           alt="Coldplay"
         ></img>
 
-        <SkipPreviousIcon
-          sx={{
-            color: "white",
-            padding: "4px",
-            fontSize: 48,
-          }}
-        />
+        <SkipPreviousIcon />
 
-        {songStatus && (
-          <PlayCircleFilledIcon
-            sx={{
-              color: "white",
-              padding: "4px",
-              fontSize: 60,
-            }}
-            onClick={handleSongStatus}
-          />
-        )}
+        {songStatus && <FilledPlayIcon onClick={handleSongStatus} />}
 
-        {!songStatus && (
-          <PauseCircleFilledIcon
-            sx={{
-              color: "white",
-              padding: "4px",
-              fontSize: 60,
-            }}
-            onClick={handleSongStatus}
-          />
-        )}
-        <SkipNextIcon
-          sx={{
-            color: "white",
-            padding: "4px",
-            fontSize: 48,
-          }}
-        />
+        {!songStatus && <FilledPauseIcon onClick={handleSongStatus} />}
+        <SkipNextIcon />
+
         <img
           className="shuffle-again-icon"
           src={AGAINICON}
@@ -202,7 +163,7 @@ function Song() {
       </div>
       <div className="song-actions-more">
         <DevicesIcon />
-        <ShareOutlinedIcon />
+        <ShareIcon />
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import React from "react";
 import "./PlaylistSong.css";
 import { useSong } from "../../../../contexts/SongContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLikedSongs } from "../../../../contexts/LikedSongContext";
-import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import PlaylistAddIcon from "../../../SVG/PlaylistAddIcon";
+import PlaylistCheckedIcon from "../../../SVG/PlaylistCheckedIcon";
 
 function PlaylistSong({ order, song }) {
   const location = useLocation();
@@ -45,7 +45,7 @@ function PlaylistSong({ order, song }) {
       {location.pathname !== "/library" && (
         <div className="actions">
           {isLiked ? (
-            <PlaylistAddCheckIcon
+            <PlaylistCheckedIcon
               style={{ color: "#1ED760", cursor: "pointer" }}
               onClick={handlePlaylistRemoveClick}
             />

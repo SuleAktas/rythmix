@@ -2,7 +2,7 @@ import React from "react";
 import PlaylistSong from "../PlaylistPage/components/PlaylistSong/PlaylistSong";
 import Filters from "../SearchPage/components/Filters/Filters";
 import SearchInput from "../SearchPage/components/SearchInput/SearchInput";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import BackIcon from "../SVG/BackIcon";
 import "./FullSearchPage.css";
 
 function FullSearchPage({ onClose }) {
@@ -24,7 +24,7 @@ function FullSearchPage({ onClose }) {
   return (
     <div className="full-search-container">
       <div className="search-header">
-        <ArrowBackIcon className="back-icon" onClick={onClose} />
+        <BackIcon onClick={onClose} />
         <SearchInput fullPage={true}></SearchInput>
       </div>
       <div className="filters">

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./SongPlayer.css";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useSong } from "../../contexts/SongContext";
 import { useLikedSongs } from "../../contexts/LikedSongContext";
+import PlayIcon from "../SVG/PlayIcon";
+import FavoriteIcon from "../SVG/FavoriteIcon";
+import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
 
 function SongPlayer({ openSongPlayer }) {
   const SONG_PIC = process.env.PUBLIC_URL + "/images/COLDPLAY.png";
@@ -43,19 +43,8 @@ function SongPlayer({ openSongPlayer }) {
           </div>
         </div>
         <div className="song-player-actions">
-          {isLiked ? (
-            <FavoriteIcon
-              fontSize="large"
-              onClick={handlePlaylistRemoveClick}
-            ></FavoriteIcon>
-          ) : (
-            <FavoriteBorderIcon
-              fontSize="large"
-              onClick={handlePlaylistAddClick}
-            ></FavoriteBorderIcon>
-          )}
-
-          <PlayArrowIcon fontSize="large"></PlayArrowIcon>
+          {isLiked ? <FilledFavoriteIcon /> : <FavoriteIcon />}
+          <PlayIcon />
         </div>
       </div>
     )

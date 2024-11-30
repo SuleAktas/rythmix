@@ -1,10 +1,10 @@
 import React from "react";
 import FooterItem from "./components/FooterItem/FooterItem";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import { useNavigate } from "react-router-dom";
 import "./Footer.css";
+import HomeIcon from "../../SVG/TabIcons/HomeIcon";
+import SearchIcon from "../../SVG/TabIcons/SearchIcon";
+import LibraryIcon from "../../SVG/TabIcons/LibraryIcon";
 
 function Footer() {
   const navigate = useNavigate();
@@ -15,17 +15,17 @@ function Footer() {
   return (
     <div className="footer">
       <FooterItem
-        icon={<HomeOutlinedIcon sx={{ fontSize: 30 }} />}
+        icon={<HomeIcon />}
         title="Home"
         onClick={() => handleNavigate("/")}
       />
       <FooterItem
-        icon={<SearchOutlinedIcon sx={{ fontSize: 30 }} />}
+        icon={<SearchIcon />}
         title="Search"
         onClick={() => handleNavigate("/search")}
       />
       <FooterItem
-        icon={<LibraryMusicIcon sx={{ fontSize: 30 }} />}
+        icon={<LibraryIcon />}
         title="Library"
         onClick={() => handleNavigate("/library")}
       />

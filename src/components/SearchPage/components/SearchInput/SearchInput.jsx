@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import FullSearchPage from "../../../FullSearchPage/FullSearchPage";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 import "./SearchInput.css";
+import SearchIcon from "../../../SVG/TabIcons/SearchIcon";
 
 function SearchInput({ fullPage = false }) {
   const [isFullPageComponentVisible, setIsFullPageComponentVisible] =
@@ -18,7 +18,7 @@ function SearchInput({ fullPage = false }) {
 
   return (
     <div className="search-input">
-      <SearchOutlinedIcon size="xl" />
+      <SearchIcon />
       <input
         className="input"
         placeholder="What do you wanna listen to?"

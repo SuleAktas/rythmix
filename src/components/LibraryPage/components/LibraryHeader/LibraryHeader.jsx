@@ -1,7 +1,6 @@
 import React from "react";
 import "./LibraryHeader.css";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "../../../SVG/TabIcons/SearchIcon";
 
 function LibraryHeader() {
   return (
@@ -16,8 +15,7 @@ function LibraryHeader() {
       </div>
 
       <div className="header-action-buttons">
-        <SearchOutlinedIcon size="xl" />
-        <AddIcon size="xl" />
+        <SearchIcon />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ function Card({ album }) {
   const { setPlaylist } = usePlaylist();
 
   const handleCardClick = () => {
+    debugger;
     setPlaylist(album);
 
     navigate(`/playlist`, {
