@@ -5,26 +5,21 @@ import { useLikedSongs } from "../../contexts/LikedSongContext";
 import PlayIcon from "../SVG/PlayIcon";
 import FavoriteIcon from "../SVG/FavoriteIcon";
 import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
+import { useState } from "react";
 
 function SongPlayer({ openSongPlayer }) {
   const SONG_PIC = process.env.PUBLIC_URL + "/images/COLDPLAY.png";
   const { song } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
-
-  const handlePlaylistAddClick = (e) => {
+  const [isLiked, setIsLiked] = useState(
+    likedSongs.some((songPrev) => songPrev.name === song.name)
+  );
+  const handleLike = (e) => {
     e.stopPropagation();
-    if (!likedSongs.some((songPrev) => songPrev.name === song.name)) {
-      setLikedSongs((prev) => [...prev, song]);
-    }
+    if (!isLiked) setLikedSongs((prev) => [...prev, song]);
+    else setLikedSongs((prev) => prev.filter((prevSong) => prevSong !== song));
+    setIsLiked((prev) => !prev);
   };
-  const handlePlaylistRemoveClick = (e) => {
-    e.stopPropagation();
-    setLikedSongs((prev) =>
-      prev.filter((songPrev) => songPrev.name !== song.name)
-    );
-  };
-
-  const isLiked = likedSongs.some((songPrev) => songPrev.name === song.name);
 
   return (
     song.name && (
@@ -43,7 +38,11 @@ function SongPlayer({ openSongPlayer }) {
           </div>
         </div>
         <div className="song-player-actions">
-          {isLiked ? <FilledFavoriteIcon /> : <FavoriteIcon />}
+          {isLiked ? (
+            <FilledFavoriteIcon onClick={handleLike} />
+          ) : (
+            <FavoriteIcon onClick={handleLike} />
+          )}
           <PlayIcon />
         </div>
       </div>

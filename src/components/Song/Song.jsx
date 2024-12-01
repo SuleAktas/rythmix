@@ -32,15 +32,9 @@ function Song() {
   const previousPage = location.state?.from || "/";
 
   const audioRef = useRef(null);
-  const isLiked = likedSongs.some((songPrev) => songPrev.id === song.id);
-  const handlePlaylistAddClick = () => {
-    if (!likedSongs.some((songPrev) => songPrev.id === song.id)) {
-      setLikedSongs((prev) => [...prev, song]);
-    }
-  };
-  const handlePlaylistRemoveClick = (e) => {
-    setLikedSongs((prev) => prev.filter((songPrev) => songPrev.id !== song.id));
-  };
+  const [isLiked, setIsLiked] = useState(
+    likedSongs.some((songPrev) => songPrev.id === song.id)
+  );
 
   const handleSongStatus = () => {
     setSongStatus((prev) => !prev);
@@ -64,6 +58,13 @@ function Song() {
       audioRef.current.currentTime = newTime;
     }
     setSongRemainingTime(songDuration - newTime);
+  };
+  const handleLike = () => {
+    if (!isLiked) setLikedSongs((prev) => [...prev, song]);
+    else {
+      setLikedSongs((prev) => prev.filter((prevSong) => prevSong !== song));
+    }
+    setIsLiked((prev) => !prev);
   };
 
   const formatTime = (seconds) => {
@@ -122,7 +123,11 @@ function Song() {
         <div className="song-name">{song.name} </div>
         <div className="song-singer">{song.artist_name}</div>
         <div className="song-like">
-          {isLiked ? <FilledFavoriteIcon /> : <FavoriteIcon />}
+          {isLiked ? (
+            <FilledFavoriteIcon onClick={handleLike} />
+          ) : (
+            <FavoriteIcon onClick={handleLike} />
+          )}
         </div>
       </div>
       <div className="song-progress-bar">
@@ -150,9 +155,13 @@ function Song() {
 
         <SkipPreviousIcon />
 
-        {songStatus && <FilledPlayIcon onClick={handleSongStatus} />}
+        {songStatus && (
+          <FilledPlayIcon onClick={handleSongStatus} color="white" />
+        )}
 
-        {!songStatus && <FilledPauseIcon onClick={handleSongStatus} />}
+        {!songStatus && (
+          <FilledPauseIcon onClick={handleSongStatus} color="white" />
+        )}
         <SkipNextIcon />
 
         <img
