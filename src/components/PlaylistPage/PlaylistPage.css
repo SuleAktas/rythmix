@@ -29,8 +29,9 @@
   margin: 20px;
 }
 .playlist-actions {
-  /* display: flex;
-  gap: 10px; */
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 .playlist-buttons {
   margin: 20px;

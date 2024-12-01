@@ -87,8 +87,12 @@ function PlaylistPage({ title }) {
           </div>
 
           <div className="playlist-play">
-            {songStatus && <FilledPlayIcon onClick={handleSongStatus} />}
-            {!songStatus && <FilledPauseIcon onClick={handleSongStatus} />}
+            {songStatus && (
+              <FilledPlayIcon onClick={handleSongStatus} color="#1ED760" />
+            )}
+            {!songStatus && (
+              <FilledPauseIcon onClick={handleSongStatus} color="#1ED760" />
+            )}
           </div>
         </div>
       </div>
