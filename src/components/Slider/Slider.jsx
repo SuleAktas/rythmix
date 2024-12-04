@@ -2,9 +2,14 @@ import React from "react";
 import "./Slider.css";
 import Card from "../Card/Card";
 import { useSongApi } from "../../contexts/SongApiContext";
+import { useEffect } from "react";
 
 function Slider({ title }) {
-  const { albums } = useSongApi();
+  const { albums, fetchAlbums } = useSongApi();
+
+  useEffect(() => {
+    fetchAlbums();
+  }, [fetchAlbums]);
 
   return (
     <div className="slider">
