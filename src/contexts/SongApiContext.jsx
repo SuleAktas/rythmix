@@ -24,6 +24,19 @@ export const SongApiProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  const fetchAllTracks = async () => {
+    try {
+      const response = await fetch(
+        `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&tags=rock`
+      );
+      const data = await response.json();
+      setTracks(data.results);
+    } catch (err) {
+      setError("Error fetching tracks");
+    } finally {
+      setLoading(false);
+    }
+  };
   const fetchAlbums = async () => {
     try {
       const response = await fetch(
@@ -62,6 +75,7 @@ export const SongApiProvider = ({ children }) => {
         setSong,
         setTracks,
         fetchTracks,
+        fetchAllTracks,
         fetchAlbums,
         fetchTrackDetails,
       }}

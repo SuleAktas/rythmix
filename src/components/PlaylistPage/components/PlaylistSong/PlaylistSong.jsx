@@ -32,29 +32,35 @@ function PlaylistSong({ order, song }) {
   const isLiked = likedSongs.some((songPrev) => songPrev.id === song.id);
 
   return (
-    <div className="playlist-song-item" onClick={handlePlaySong}>
-      {order && <div className="song-order">{order}</div>}
-      {song.image && location.pathname !== "/playlist" && (
-        <img className="song-order" src={song.image} alt={song.name}></img>
-      )}
+    song && (
+      <div className="playlist-song-item" onClick={handlePlaySong}>
+        {order && <div className="song-order">{order}</div>}
+        {song.album_image && location.pathname !== "/playlist" && (
+          <img
+            className="song-order"
+            src={song.album_image}
+            alt={song.name}
+          ></img>
+        )}
 
-      <div className="song-exp">
-        <span className="song-title">{song.name}</span>
-        <span className="singer">{song.artist_name}</span>
-      </div>
-      {location.pathname !== "/library" && (
-        <div className="actions">
-          {isLiked ? (
-            <PlaylistCheckedIcon
-              style={{ color: "#1ED760", cursor: "pointer" }}
-              onClick={handlePlaylistRemoveClick}
-            />
-          ) : (
-            <PlaylistAddIcon onClick={handlePlaylistAddClick} />
-          )}
+        <div className="song-exp">
+          <span className="song-title">{song.name}</span>
+          <span className="singer">{song.artist_name}</span>
         </div>
-      )}
-    </div>
+        {location.pathname !== "/library" && (
+          <div className="actions">
+            {isLiked ? (
+              <PlaylistCheckedIcon
+                style={{ color: "#1ED760", cursor: "pointer" }}
+                onClick={handlePlaylistRemoveClick}
+              />
+            ) : (
+              <PlaylistAddIcon onClick={handlePlaylistAddClick} />
+            )}
+          </div>
+        )}
+      </div>
+    )
   );
 }
 
