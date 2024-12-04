@@ -14,6 +14,7 @@ import FilledPauseIcon from "../SVG/FilledPauseIcon";
 import SkipNextIcon from "../SVG/SkipNextIcon";
 import SkipPreviousIcon from "../SVG/SkipPreviousIcon";
 import { useSongApi } from "../../contexts/SongApiContext";
+import { FastAverageColor } from "fast-average-color";
 function Song() {
   const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
   const MOREICON = process.env.PUBLIC_URL + "/images/MOREICON.png";
@@ -36,6 +37,33 @@ function Song() {
     likedSongs.some((songPrev) => songPrev.id === song.id)
   );
 
+  const [backgroundColor, setBackgroundColor] = useState("");
+  const mixWithBlack = (colorHex, ratio = 0.5) => {
+    let r = parseInt(colorHex.slice(1, 3), 16);
+    let g = parseInt(colorHex.slice(3, 5), 16);
+    let b = parseInt(colorHex.slice(5, 7), 16);
+
+    r = Math.round(r * (1 - ratio));
+    g = Math.round(g * (1 - ratio));
+    b = Math.round(b * (1 - ratio));
+
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+  useEffect(() => {
+    if (song.album_image) {
+      const fac = new FastAverageColor();
+
+      fac
+        .getColorAsync(song.album_image)
+        .then((color) => {
+          const mixedColor = mixWithBlack(color.hex, 0.5);
+          setBackgroundColor(mixedColor);
+        })
+        .catch((err) => {
+          console.error("Error fetching color:", err);
+        });
+    }
+  }, [song.album_image]);
   const handleSongStatus = () => {
     setSongStatus((prev) => !prev);
     if (!audioRef.current) return;
@@ -106,6 +134,7 @@ function Song() {
   return (
     song && (
       <div
+        style={{ backgroundColor: backgroundColor }}
         className={`song-container song-container ${
           isVisible ? "slide-up" : ""
         }`}
