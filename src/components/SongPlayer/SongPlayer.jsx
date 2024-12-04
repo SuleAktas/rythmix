@@ -9,7 +9,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function SongPlayer() {
-  const SONG_PIC = process.env.PUBLIC_URL + "/images/COLDPLAY.png";
   const navigate = useNavigate();
   const { song } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
@@ -40,8 +39,8 @@ function SongPlayer() {
           <div className="song-player-image-box">
             <img
               className="song-player-image"
-              src={SONG_PIC}
-              alt="Coldplay"
+              src={song.album_image}
+              alt={song.name}
             ></img>
           </div>
           <div className="song-player-about">
