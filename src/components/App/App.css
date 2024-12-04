@@ -1,3 +1,11 @@
 .App {
   height: 100%;
 }
+
+.app-container {
+  overflow: hidden;
+}
+
+.app-container.full {
+  height: 100%;
+}

@@ -24,22 +24,26 @@ function App() {
     navigate("/song", { state: { from: window.location.pathname } });
   };
   return (
-    <AppProvider>
-      <div className="App">
-        {location.pathname === "/" && <Header />}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/playlist" element={<PlaylistPage />} />
-          <Route path="/song" element={<Song />} />
-          <Route path="/library" element={<LibraryPage />} />
-        </Routes>
-        {location.pathname !== "/song" && (
-          <SongPlayer openSongPlayer={openSongPlayer} />
-        )}
-        {location.pathname !== "/song" && <Footer />}
-      </div>
-    </AppProvider>
+    <div
+      className={`app-container ${location.pathname === "/song" ? "full" : ""}`}
+    >
+      <AppProvider>
+        <div className="App">
+          {location.pathname === "/" && <Header />}
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/playlist" element={<PlaylistPage />} />
+            <Route path="/song" element={<Song />} />
+            <Route path="/library" element={<LibraryPage />} />
+          </Routes>
+          {location.pathname !== "/song" && (
+            <SongPlayer openSongPlayer={openSongPlayer} />
+          )}
+          {location.pathname !== "/song" && <Footer />}
+        </div>
+      </AppProvider>
+    </div>
   );
 }
 
