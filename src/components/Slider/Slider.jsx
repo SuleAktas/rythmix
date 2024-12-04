@@ -9,7 +9,7 @@ function Slider({ title }) {
 
   useEffect(() => {
     fetchAlbums();
-  }, [fetchAlbums]);
+  }, []);
 
   return (
     <div className="slider">
