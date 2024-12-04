@@ -2,8 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import "./Song.css";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSong } from "../../contexts/SongContext";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useRef } from "react";
 import { useLikedSongs } from "../../contexts/LikedSongContext";
 import FavoriteIcon from "../SVG/FavoriteIcon";
@@ -14,22 +13,23 @@ import FilledPlayIcon from "../SVG/FilledPlayIcon";
 import FilledPauseIcon from "../SVG/FilledPauseIcon";
 import SkipNextIcon from "../SVG/SkipNextIcon";
 import SkipPreviousIcon from "../SVG/SkipPreviousIcon";
+import { useSongApi } from "../../contexts/SongApiContext";
 function Song() {
   const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
   const MOREICON = process.env.PUBLIC_URL + "/images/MOREICON.png";
   const AGAINICON = process.env.PUBLIC_URL + "/images/AGAINICON.png";
   const SHUFFLEICON = process.env.PUBLIC_URL + "/images/SHUFFLEICON.png";
 
-  const { song } = useSong();
+  const { song, fetchTrackDetails } = useSongApi();
+  const [searchParams] = useSearchParams();
+  const songId = searchParams.get("songId");
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const [songStatus, setSongStatus] = useState(true);
-  const [songDuration, setSongDuration] = useState(song.duration);
-  const [songRemainingTime, setSongRemainingTime] = useState(song.duration);
+  const [songDuration, setSongDuration] = useState(0);
+  const [songRemainingTime, setSongRemainingTime] = useState(0);
   const [songPastTime, setSongPastTime] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const previousPage = location.state?.from || "/";
 
   const audioRef = useRef(null);
   const [isLiked, setIsLiked] = useState(
@@ -44,11 +44,6 @@ function Song() {
     } else {
       audioRef.current.play();
     }
-  };
-
-  const closeSong = () => {
-    setIsVisible(false);
-    navigate(previousPage, { state: { from: window.location.pathname } });
   };
 
   const handleSeek = (event) => {
@@ -78,6 +73,13 @@ function Song() {
   }, [isVisible, navigate]);
 
   useEffect(() => {
+    if (songId) {
+      fetchTrackDetails(songId);
+    }
+  }, [songId]);
+  useEffect(() => {
+    setSongRemainingTime(song.duration);
+    setSongDuration(song.duration);
     if (audioRef.current) {
       const handleLoadedMetadata = () => {
         setSongDuration(audioRef.current.duration || 0);
@@ -102,79 +104,88 @@ function Song() {
     }
   }, []);
   return (
-    <div
-      className={`song-container song-container ${isVisible ? "slide-up" : ""}`}
-    >
-      <audio ref={audioRef} src={song.audio} />
-      <div className="song-header">
-        <div className="song-down-icon" onClick={() => navigate(-1)}>
-          <img src={DOWNICON} alt="Coldplay"></img>
+    song && (
+      <div
+        className={`song-container song-container ${
+          isVisible ? "slide-up" : ""
+        }`}
+      >
+        <audio ref={audioRef} src={song && song.audio} />
+        <div className="song-header">
+          <div className="song-down-icon" onClick={() => navigate(-1)}>
+            <img src={DOWNICON} alt="Coldplay"></img>
+          </div>
+          <div className="song-title">{song && song.artist_name}</div>
+          <div className="song-more">
+            <img src={MOREICON} alt="Coldplay"></img>
+          </div>
         </div>
-        <div className="song-title">{song.artist_name}</div>
-        <div className="song-more">
-          <img src={MOREICON} alt="Coldplay"></img>
-        </div>
-      </div>
 
-      <div className="song-image">
-        <img src={song.image} alt={song.artist_name}></img>
-      </div>
-      <div className="song-about">
-        <div className="song-name">{song.name} </div>
-        <div className="song-singer">{song.artist_name}</div>
-        <div className="song-like">
-          {isLiked ? (
-            <FilledFavoriteIcon onClick={handleLike} />
-          ) : (
-            <FavoriteIcon onClick={handleLike} />
+        <div className="song-image">
+          <img
+            src={song && song.album_image}
+            alt={song && song.artist_name}
+          ></img>
+        </div>
+        <div className="song-about">
+          <div className="song-name">{song && song.name} </div>
+          <div className="song-singer">{song && song.artist_name}</div>
+          <div className="song-like">
+            {isLiked ? (
+              <FilledFavoriteIcon onClick={handleLike} />
+            ) : (
+              <FavoriteIcon onClick={handleLike} />
+            )}
+          </div>
+        </div>
+        <div className="song-progress-bar">
+          <input
+            type="range"
+            min="0"
+            max={songDuration}
+            value={songPastTime}
+            onChange={handleSeek}
+            className="custom-range"
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div className="song-time">
+          <div className="song-past-time">{formatTime(songPastTime)}</div>
+          <div className="song-remain-time">
+            {formatTime(songRemainingTime)}
+          </div>
+        </div>
+
+        <div className="song-actions">
+          <img
+            className="shuffle-again-icon"
+            src={SHUFFLEICON}
+            alt="Coldplay"
+          ></img>
+
+          <SkipPreviousIcon />
+
+          {songStatus && (
+            <FilledPlayIcon onClick={handleSongStatus} color="white" />
           )}
+
+          {!songStatus && (
+            <FilledPauseIcon onClick={handleSongStatus} color="white" />
+          )}
+          <SkipNextIcon />
+
+          <img
+            className="shuffle-again-icon"
+            src={AGAINICON}
+            alt="Coldplay"
+          ></img>
+        </div>
+        <div className="song-actions-more">
+          <DevicesIcon />
+          <ShareIcon />
         </div>
       </div>
-      <div className="song-progress-bar">
-        <input
-          type="range"
-          min="0"
-          max={songDuration}
-          value={songPastTime}
-          onChange={handleSeek}
-          className="custom-range"
-          style={{ width: "100%" }}
-        />
-      </div>
-      <div className="song-time">
-        <div className="song-past-time">{formatTime(songPastTime)}</div>
-        <div className="song-remain-time">{formatTime(songRemainingTime)}</div>
-      </div>
-
-      <div className="song-actions">
-        <img
-          className="shuffle-again-icon"
-          src={SHUFFLEICON}
-          alt="Coldplay"
-        ></img>
-
-        <SkipPreviousIcon />
-
-        {songStatus && (
-          <FilledPlayIcon onClick={handleSongStatus} color="white" />
-        )}
-
-        {!songStatus && (
-          <FilledPauseIcon onClick={handleSongStatus} color="white" />
-        )}
-        <SkipNextIcon />
-
-        <img
-          className="shuffle-again-icon"
-          src={AGAINICON}
-          alt="Coldplay"
-        ></img>
-      </div>
-      <div className="song-actions-more">
-        <DevicesIcon />
-        <ShareIcon />
-      </div>
-    </div>
+    )
   );
 }
 

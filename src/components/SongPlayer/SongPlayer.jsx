@@ -6,9 +6,11 @@ import PlayIcon from "../SVG/PlayIcon";
 import FavoriteIcon from "../SVG/FavoriteIcon";
 import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function SongPlayer({ openSongPlayer }) {
+function SongPlayer() {
   const SONG_PIC = process.env.PUBLIC_URL + "/images/COLDPLAY.png";
+  const navigate = useNavigate();
   const { song } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const [isLiked, setIsLiked] = useState(
@@ -19,6 +21,16 @@ function SongPlayer({ openSongPlayer }) {
     if (!isLiked) setLikedSongs((prev) => [...prev, song]);
     else setLikedSongs((prev) => prev.filter((prevSong) => prevSong !== song));
     setIsLiked((prev) => !prev);
+  };
+
+  const openSongPlayer = () => {
+    const searchParams = new URLSearchParams();
+    searchParams.append("songId", song.id);
+    navigate({
+      pathname: "/song",
+      search: searchParams.toString(),
+      state: { from: window.location.pathname },
+    });
   };
 
   return (

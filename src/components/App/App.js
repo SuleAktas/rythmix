@@ -8,7 +8,6 @@ import {
   Routes,
   Route,
   useLocation,
-  useNavigate,
 } from "react-router-dom";
 import PlaylistPage from "../PlaylistPage/PlaylistPage";
 import Song from "../Song/Song";
@@ -18,11 +17,7 @@ import { AppProvider } from "../../providers/AppProvider";
 
 function App() {
   const location = useLocation();
-  const navigate = useNavigate();
 
-  const openSongPlayer = () => {
-    navigate("/song", { state: { from: window.location.pathname } });
-  };
   return (
     <div
       className={`app-container ${location.pathname === "/song" ? "full" : ""}`}
@@ -37,9 +32,7 @@ function App() {
             <Route path="/song" element={<Song />} />
             <Route path="/library" element={<LibraryPage />} />
           </Routes>
-          {location.pathname !== "/song" && (
-            <SongPlayer openSongPlayer={openSongPlayer} />
-          )}
+          {location.pathname !== "/song" && <SongPlayer />}
           {location.pathname !== "/song" && <Footer />}
         </div>
       </AppProvider>
