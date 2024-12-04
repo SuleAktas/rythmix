@@ -6,7 +6,7 @@ function CategoryCard({ title }) {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
     return `#${randomColor.padStart(6, "0")}`;
   };
-  const [bgColor, setBgColor] = useState(getRandomColor());
+  const [bgColor] = useState(getRandomColor());
 
   return (
     <div className="category" style={{ backgroundColor: bgColor }}>
