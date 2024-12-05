@@ -24,8 +24,8 @@ function FullSearchPage({ onClose }) {
       </div>
       <div className="filtered-songs">
         {tracks &&
-          tracks.map((song) => {
-            return <PlaylistSong song={song} />;
+          tracks.map((track) => {
+            return <PlaylistSong key={track.id} song={track} />;
           })}
       </div>
     </div>
