@@ -126,36 +126,39 @@ progress::-webkit-progress-value {
   appearance: none;
   width: 100%;
   height: 4px;
-  background: #a7a7a7;
-  border-radius: 5px;
+  background: linear-gradient(
+    to right,
+    white var(--progress-percentage),
+    #d3d3d3 0%
+  );
+  border-radius: 4px;
   outline: none;
-  position: relative;
-  transition: background-color 0.2s ease;
-  background-color: #a7a7a7;
+  cursor: pointer;
+  margin: 10px 0;
 }
 
 .custom-range::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 4px;
-  color: white;
-  border-radius: 5px;
-  -webkit-appearance: none;
-}
-
-.custom-range::-webkit-slider-progress {
-  background: #fff;
-  height: 4px;
+  height: 8px;
+  border-radius: 4px;
 }
 
 .custom-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 12px;
-  height: 12px;
+  height: 16px;
+  width: 16px;
   background: white;
   border-radius: 50%;
   cursor: pointer;
-  position: relative;
-  top: -4px;
-  transition: background-color 0.2s ease;
+  margin-top: -4px;
+}
+
+.custom-range::-moz-range-progress {
+  background-color: white;
+  height: 8px;
+}
+
+.custom-range::-moz-range-track {
+  background-color: #d3d3d3;
+  height: 8px;
 }

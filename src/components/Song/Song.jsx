@@ -80,6 +80,11 @@ function Song() {
     if (audioRef.current) {
       audioRef.current.currentTime = newTime;
     }
+    const progressPercentage = (newTime / songDuration) * 100;
+    event.target.style.setProperty(
+      "--progress-percentage",
+      `${progressPercentage}%`
+    );
     setSongRemainingTime(songDuration - newTime);
   };
   const handleLike = () => {
@@ -131,6 +136,12 @@ function Song() {
       };
     }
   }, []);
+  useEffect(() => {
+    const progressPercentage = (songPastTime / songDuration) * 100;
+    document
+      .querySelector(".custom-range")
+      .style.setProperty("--progress-percentage", `${progressPercentage}%`);
+  }, [songDuration, songPastTime]);
   return (
     song && (
       <div
