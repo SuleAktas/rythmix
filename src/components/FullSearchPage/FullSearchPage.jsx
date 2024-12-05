@@ -16,7 +16,7 @@ function FullSearchPage({ onClose }) {
   return (
     <div className="full-search-container">
       <div className="search-header">
-        <BackIcon onClick={onClose} />
+        <BackIcon className="back-icon" onClick={onClose} />
         <SearchInput fullPage={true}></SearchInput>
       </div>
       <div className="filters">

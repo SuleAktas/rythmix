@@ -3,6 +3,7 @@ import React from "react";
 const BackIcon = (props) => (
   <svg
     onClick={props.onClick}
+    className={props.className}
     width="25"
     height="24"
     viewBox="0 0 25 24"
