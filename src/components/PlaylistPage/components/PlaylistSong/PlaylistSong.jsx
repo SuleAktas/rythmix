@@ -13,10 +13,9 @@ function PlaylistSong({ order, song }) {
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const handlePlaySong = () => {
     if (location.pathname !== "/library") setSong(song);
-    else
-      navigate("/playlist", {
-        state: { data: song, from: window.location.pathname },
-      });
+    else {
+      navigate("/playlist?albumId=0");
+    }
   };
   const handlePlaylistAddClick = (e) => {
     e.stopPropagation();

@@ -9,7 +9,7 @@ function LibraryPage() {
   const { likedPlaylists } = useLikedPlaylists();
 
   const likedSongPlaylist = {
-    image: LIKEDSONGS,
+    album_image: LIKEDSONGS,
     name: "Beğenilen Şarkılar",
     artist_name: "Çalma Listesi",
   };

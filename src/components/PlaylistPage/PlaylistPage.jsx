@@ -12,13 +12,15 @@ import DetailsIcon from "../SVG/DetailsIcon";
 import SpotifyIcon from "../SVG/SpotifyIcon";
 import BackIcon from "../SVG/BackIcon";
 import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
+import { useLikedSongs } from "../../contexts/LikedSongContext";
 
 function PlaylistPage({ title }) {
   const [searchParams] = useSearchParams();
   const albumId = searchParams.get("albumId");
   const location = useLocation();
   const navigate = useNavigate();
-  const { tracks, loading, error, fetchTracks } = useSongApi();
+  const { tracks, loading, error, fetchTracks, setTracks } = useSongApi();
+  const { likedSongs } = useLikedSongs();
   const { likedPlaylists, setLikedPlaylists } = useLikedPlaylists();
   const [songStatus, setSongStatus] = useState(true);
   const [isLiked, setIsLiked] = useState(
@@ -36,14 +38,16 @@ function PlaylistPage({ title }) {
     setIsLiked((prev) => !prev);
   };
   useEffect(() => {
-    if (albumId) {
+    if (Number(albumId) !== 0) {
       fetchTracks(albumId);
+    } else {
+      setTracks(likedSongs);
     }
   }, [location.search]);
 
   if (loading) return <p>Loading tracks...</p>;
   if (error) return <p>{error}</p>;
-
+  const LIKEDSONGS = process.env.PUBLIC_URL + "/images/LIKEDSONGS.jpeg";
   return (
     !loading && (
       <div className="playlistpage-container">
@@ -54,13 +58,21 @@ function PlaylistPage({ title }) {
             </div>
             <div className="playlist-img">
               <img
-                src={tracks && tracks[0] && tracks[0].album_image}
+                src={
+                  Number(albumId) !== 0
+                    ? tracks && tracks[0] && tracks[0].album_image
+                    : LIKEDSONGS
+                }
                 alt={title}
               ></img>
             </div>
 
             <div className="playlist-exp">
-              <h1>{tracks && tracks[0] && tracks[0].album_name}</h1>
+              <h1>
+                {Number(albumId) !== 0
+                  ? tracks && tracks[0] && tracks[0].album_name
+                  : "Beğenilen Şarkılar"}
+              </h1>
               <p>The essential tracks,all in one playlist</p>
               <div className="spotify-exp">
                 <SpotifyIcon />
