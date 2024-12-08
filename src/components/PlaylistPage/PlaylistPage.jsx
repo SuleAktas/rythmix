@@ -16,7 +16,7 @@ import { useLikedSongs } from "../../contexts/LikedSongContext";
 
 function PlaylistPage({ title }) {
   const [searchParams] = useSearchParams();
-  const albumId = searchParams.get("albumId");
+  const albumId = searchParams.get("id");
   const location = useLocation();
   const navigate = useNavigate();
   const { tracks, loading, error, fetchTracks, setTracks } = useSongApi();
