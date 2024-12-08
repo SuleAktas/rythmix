@@ -38,7 +38,7 @@
 .playlist-actions {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
 }
 .playlist-buttons {
   margin: 20px;
