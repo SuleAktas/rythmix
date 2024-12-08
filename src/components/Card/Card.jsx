@@ -7,7 +7,7 @@ function Card({ album }) {
 
   const handleCardClick = () => {
     const searchParams = new URLSearchParams();
-    searchParams.append("albumId", album.id);
+    searchParams.append("id", album.id);
 
     navigate({
       pathname: "/playlist",

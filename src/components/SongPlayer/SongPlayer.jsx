@@ -29,7 +29,7 @@ function SongPlayer() {
 
   const openSongPlayer = () => {
     const searchParams = new URLSearchParams();
-    searchParams.append("songId", song.id);
+    searchParams.append("id", song.id);
     navigate({
       pathname: "/song",
       search: searchParams.toString(),

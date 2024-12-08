@@ -23,7 +23,7 @@ function Song() {
 
   const { song, fetchTrackDetails } = useSongApi();
   const [searchParams] = useSearchParams();
-  const songId = searchParams.get("songId");
+  const songId = searchParams.get("id");
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const [songStatus, setSongStatus] = useState(true);
   const [songDuration, setSongDuration] = useState(0);
