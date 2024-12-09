@@ -15,8 +15,10 @@ import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
 import { useLikedSongs } from "../../contexts/LikedSongContext";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useSong } from "../../contexts/SongContext";
 
 function PlaylistPage({ title }) {
+  const LIKEDSONGS = process.env.PUBLIC_URL + "/images/LIKEDSONGS.jpeg";
   const [searchParams] = useSearchParams();
   const albumId = searchParams.get("id");
   const location = useLocation();
@@ -26,11 +28,17 @@ function PlaylistPage({ title }) {
   const { likedSongs } = useLikedSongs();
   const { likedPlaylists, setLikedPlaylists } = useLikedPlaylists();
   const [songStatus, setSongStatus] = useState(true);
+  const { setSong } = useSong();
   const [isLiked, setIsLiked] = useState(
     likedPlaylists.some((songPrev) => songPrev.id === albumId)
   );
+
   const handleSongStatus = () => {
-    setSongStatus(!songStatus);
+    //TODO song status heryerde saklanabilmeli
+    if (tracks.length !== 0) {
+      setSong(tracks[0]);
+      setSongStatus(!songStatus);
+    }
   };
 
   const handleOnLike = () => {
@@ -40,6 +48,7 @@ function PlaylistPage({ title }) {
     }
     setIsLiked((prev) => !prev);
   };
+
   useEffect(() => {
     if (Number(albumId) !== 0) {
       setLoading(true);
@@ -81,7 +90,7 @@ function PlaylistPage({ title }) {
     );
   };
   if (error) return <p>{error}</p>;
-  const LIKEDSONGS = process.env.PUBLIC_URL + "/images/LIKEDSONGS.jpeg";
+
   return (
     <div className="playlistpage-container">
       <div className="playlistpage-exp-container">
@@ -149,10 +158,9 @@ function PlaylistPage({ title }) {
           </div>
 
           <div className="playlist-play">
-            {songStatus && (
+            {songStatus ? (
               <FilledPlayIcon onClick={handleSongStatus} color="#1ED760" />
-            )}
-            {!songStatus && (
+            ) : (
               <FilledPauseIcon onClick={handleSongStatus} color="#1ED760" />
             )}
           </div>

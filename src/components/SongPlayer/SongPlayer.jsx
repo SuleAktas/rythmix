@@ -8,14 +8,19 @@ import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import PauseIcon from "../SVG/PauseIcon";
+import { useRef } from "react";
 
 function SongPlayer() {
   const navigate = useNavigate();
   const { song } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
+  const [songStatus, setSongStatus] = useState(true);
   const [isLiked, setIsLiked] = useState(
     likedSongs.some((songPrev) => songPrev.id === song.id)
   );
+  const audioRef = useRef(null);
+
   const handleLike = (e) => {
     e.stopPropagation();
 
@@ -25,6 +30,21 @@ function SongPlayer() {
         prev.filter((prevSong) => prevSong.id !== song.id)
       );
     setIsLiked((prev) => !prev);
+  };
+
+  const handlePlay = (e) => {
+    e.stopPropagation();
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    if (songStatus) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+
+    setSongStatus((prev) => !prev);
   };
 
   const openSongPlayer = () => {
@@ -39,7 +59,22 @@ function SongPlayer() {
 
   useEffect(() => {
     setIsLiked(likedSongs.some((songPrev) => songPrev.id === song.id));
+    setSongStatus(true);
   }, [song]);
+
+  useEffect(() => {
+    if (song.audio) {
+      const audio = audioRef.current;
+
+      if (!audio) return;
+
+      if (!songStatus) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+    }
+  }, [song, songStatus]);
 
   return (
     song.name && (
@@ -63,7 +98,13 @@ function SongPlayer() {
           ) : (
             <FavoriteIcon onClick={handleLike} />
           )}
-          <PlayIcon />
+
+          {!songStatus ? (
+            <PlayIcon onClick={handlePlay} color="white" />
+          ) : (
+            <PauseIcon onClick={handlePlay} color="white" />
+          )}
+          <audio ref={audioRef} src={song.audio} />
         </div>
       </div>
     )
