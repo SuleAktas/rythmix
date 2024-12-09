@@ -3,6 +3,7 @@ import React from "react";
 const LibraryIcon = (props) => (
   <svg
     onClick={props.onClick}
+    className={`icon ${props.className || ""}`}
     xmlns="http://www.w3.org/2000/svg"
     width={25}
     height={25}

@@ -2,6 +2,7 @@ import React from "react";
 
 const FilledPlayIcon = (props) => (
   <svg
+    className={`icon ${props.className || ""}`}
     onClick={props.onClick}
     width={56}
     height={56}

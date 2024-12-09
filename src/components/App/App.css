@@ -9,3 +9,18 @@
 .app-container.full {
   height: 100%;
 }
+.icon {
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  border-radius: 50%;
+}
+
+.icon:focus {
+  transform: scale(1);
+  /* background-color: rgb(131, 130, 130); */
+  outline: none;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}

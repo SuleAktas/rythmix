@@ -2,6 +2,7 @@ import React from "react";
 
 const PauseIcon = (props) => (
   <svg
+    className={`icon ${props.className || ""}`}
     width="40px"
     height="24px"
     viewBox="0 0 20 20"

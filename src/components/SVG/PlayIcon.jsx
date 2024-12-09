@@ -2,6 +2,7 @@ import React from "react";
 
 const PlayIcon = (props) => (
   <svg
+    className={`icon ${props.className || ""}`}
     onClick={props.onClick}
     width="40"
     height="24"

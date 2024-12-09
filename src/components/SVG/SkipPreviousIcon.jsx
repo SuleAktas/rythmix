@@ -2,6 +2,7 @@ import React from "react";
 
 const SkipPreviousIcon = (props) => (
   <svg
+    className={`icon ${props.className || ""}`}
     onClick={props.onClick}
     xmlns="http://www.w3.org/2000/svg"
     width={33}

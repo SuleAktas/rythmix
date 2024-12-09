@@ -2,6 +2,7 @@ import React from "react";
 
 const FilledPauseIcon = (props) => (
   <svg
+    className={`icon ${props.className || ""}`}
     width={57}
     height={56}
     viewBox="0 0 57 56"

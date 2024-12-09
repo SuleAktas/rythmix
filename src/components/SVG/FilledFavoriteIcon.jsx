@@ -2,6 +2,7 @@ import React from "react";
 
 const FilledFavoriteIcon = (props) => (
   <svg
+    className={`icon ${props.className || ""}`}
     onClick={props.onClick}
     width={24}
     height={24}
