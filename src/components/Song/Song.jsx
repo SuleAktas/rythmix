@@ -82,12 +82,13 @@ function Song() {
     if (audioRef.current) {
       audioRef.current.currentTime = newTime;
     }
+
+    setSongRemainingTime(songDuration - newTime);
     const progressPercentage = (newTime / songDuration) * 100;
     event.target.style.setProperty(
       "--progress-percentage",
       `${progressPercentage}%`
     );
-    setSongRemainingTime(songDuration - newTime);
   };
   const handleLike = () => {
     if (!isLiked) setLikedSongs((prev) => [...prev, song]);
@@ -115,6 +116,8 @@ function Song() {
   useEffect(() => {
     setSongRemainingTime(song.duration);
     setSongDuration(song.duration);
+  }, [song]);
+  useEffect(() => {
     if (audioRef.current) {
       const handleLoadedMetadata = () => {
         setSongDuration(audioRef.current.duration || 0);
@@ -122,6 +125,9 @@ function Song() {
 
       const handleTimeUpdate = () => {
         setSongPastTime(audioRef.current.currentTime);
+        setSongRemainingTime(
+          audioRef.current.duration - audioRef.current.currentTime
+        );
       };
 
       audioRef.current.addEventListener("loadedmetadata", handleLoadedMetadata);
