@@ -21,7 +21,8 @@ function PlaylistPage({ title }) {
   const albumId = searchParams.get("id");
   const location = useLocation();
   const navigate = useNavigate();
-  const { tracks, loading, error, fetchTracks, setTracks } = useSongApi();
+  const { tracks, loading, error, fetchTracks, setTracks, setLoading } =
+    useSongApi();
   const { likedSongs } = useLikedSongs();
   const { likedPlaylists, setLikedPlaylists } = useLikedPlaylists();
   const [songStatus, setSongStatus] = useState(true);
@@ -41,6 +42,7 @@ function PlaylistPage({ title }) {
   };
   useEffect(() => {
     if (Number(albumId) !== 0) {
+      setLoading(true);
       fetchTracks(albumId);
     } else {
       setTracks(likedSongs);

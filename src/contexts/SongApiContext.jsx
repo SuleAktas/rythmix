@@ -78,6 +78,7 @@ export const SongApiProvider = ({ children }) => {
         fetchAllTracks,
         fetchAlbums,
         fetchTrackDetails,
+        setLoading,
       }}
     >
       {children}
