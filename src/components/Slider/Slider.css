@@ -15,3 +15,26 @@
 .slider-container::-webkit-scrollbar {
   display: none;
 }
+.react-loading-skeleton {
+  background-color: purple;
+  border-radius: 8px;
+}
+
+.react-loading-skeleton::after {
+  background: linear-gradient(
+    90deg,
+    rgba(224, 224, 224, 1) 0%,
+    rgba(245, 245, 245, 1) 50%,
+    rgba(224, 224, 224, 1) 100%
+  );
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

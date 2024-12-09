@@ -15,6 +15,8 @@ import SkipNextIcon from "../SVG/SkipNextIcon";
 import SkipPreviousIcon from "../SVG/SkipPreviousIcon";
 import { useSongApi } from "../../contexts/SongApiContext";
 import { FastAverageColor } from "fast-average-color";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 function Song() {
   const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
   const MOREICON = process.env.PUBLIC_URL + "/images/MOREICON.png";
@@ -162,10 +164,19 @@ function Song() {
         </div>
 
         <div className="song-image">
-          <img
-            src={song && song.album_image}
-            alt={song && song.artist_name}
-          ></img>
+          {song ? (
+            <img
+              src={song && song.album_image}
+              alt={song && song.artist_name}
+            ></img>
+          ) : (
+            <Skeleton
+              baseColor="#2b2b2b"
+              highlightColor="#3b3b3b"
+              height={200}
+              width={200}
+            />
+          )}
         </div>
         <div className="song-about">
           <div className="song-name">{song && song.name} </div>
