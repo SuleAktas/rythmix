@@ -15,6 +15,7 @@ export const SongProvider = ({ children }) => {
     album_image: "",
     audio: "",
     image: "",
+    isPlaying: false,
   });
 
   return (

@@ -23,11 +23,11 @@ import ShuffleIcon from "../SVG/ShuffleIcon";
 import ReplayIcon from "../SVG/ReplayIcon";
 
 function Song({ onClose }) {
-  const { song } = useSong();
+  const { song, setSong } = useSong();
 
   const { likedSongs, setLikedSongs } = useLikedSongs();
 
-  const [songStatus, setSongStatus] = useState(true);
+  // const [songStatus, setSongStatus] = useState(true);
 
   const [songDuration, setSongDuration] = useState(0);
 
@@ -73,14 +73,29 @@ function Song({ onClose }) {
   };
 
   const handleSongStatus = () => {
-    setSongStatus((prev) => !prev);
-    if (!audioRef.current) return;
-    if (!songStatus) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
+    // setSongStatus((prev) => !prev);
+    setSong((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
+    // if (!audioRef.current) return;
+    // if (!song.isPlaying) {
+    //   audioRef.current.pause();
+    // } else {
+    //   audioRef.current.play();
+    // }
   };
+  useEffect(() => {
+    debugger;
+    if (song.audio) {
+      const audio = audioRef.current;
+
+      if (!audio) return;
+
+      if (!song.isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+    }
+  }, [song]);
 
   const handleSeek = (event) => {
     const newTime = Number(event.target.value);
@@ -103,6 +118,8 @@ function Song({ onClose }) {
   };
 
   useEffect(() => {
+    setSong((prev) => ({ ...prev, isPlaying: true }));
+
     const fac = new FastAverageColor();
 
     fac
@@ -121,6 +138,7 @@ function Song({ onClose }) {
   }, [isVisible]);
 
   useEffect(() => {
+    debugger;
     setSongRemainingTime(song.duration);
     setSongDuration(song.duration);
   }, [song]);
@@ -228,13 +246,12 @@ function Song({ onClose }) {
 
           <SkipPreviousIcon />
 
-          {songStatus && (
+          {!song.isPlaying ? (
             <FilledPlayIcon onClick={handleSongStatus} color="white" />
-          )}
-
-          {!songStatus && (
+          ) : (
             <FilledPauseIcon onClick={handleSongStatus} color="white" />
           )}
+
           <SkipNextIcon />
 
           <ReplayIcon />

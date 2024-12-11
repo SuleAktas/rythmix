@@ -28,7 +28,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/playlist" element={<PlaylistPage />} />
+            <Route path="/playlist/:id" element={<PlaylistPage />}>
+              <Route path="song/:songId" element={<PlaylistPage />} />
+            </Route>
+
             <Route path="/song" element={<Song />} />
             <Route path="/library" element={<LibraryPage />} />
           </Routes>

@@ -6,13 +6,7 @@ function Card({ album }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    const searchParams = new URLSearchParams();
-    searchParams.append("id", album.id);
-
-    navigate({
-      pathname: "/playlist",
-      search: searchParams.toString(),
-    });
+    navigate(`playlist/${album.id}`);
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PlaylistSong from "./components/PlaylistSong/PlaylistSong";
 import "./PlaylistPage.css";
 import { useSongApi } from "../../contexts/SongApiContext";
@@ -19,40 +19,48 @@ import { useSong } from "../../contexts/SongContext";
 
 function PlaylistPage({ title }) {
   const LIKEDSONGS = process.env.PUBLIC_URL + "/images/LIKEDSONGS.jpeg";
-  const [searchParams] = useSearchParams();
-  const albumId = searchParams.get("id");
+
+  const { id } = useParams();
+
   const location = useLocation();
+
   const navigate = useNavigate();
+
   const { tracks, loading, error, fetchTracks, setTracks, setLoading } =
     useSongApi();
+
   const { likedSongs } = useLikedSongs();
+
   const { likedPlaylists, setLikedPlaylists } = useLikedPlaylists();
-  const [songStatus, setSongStatus] = useState(true);
-  const { setSong } = useSong();
+
+  const { song, setSong } = useSong();
+
   const [isLiked, setIsLiked] = useState(
-    likedPlaylists.some((songPrev) => songPrev.id === albumId)
+    likedPlaylists.some((songPrev) => songPrev.id === id)
   );
 
   const handleSongStatus = () => {
-    //TODO song status heryerde saklanabilmeli
-    if (tracks.length !== 0) {
-      setSong(tracks[0]);
-      setSongStatus(!songStatus);
-    }
+    setSong((prev) => {
+      const updatedSong =
+        !prev.name && tracks.length !== 0
+          ? { ...tracks[0], isPlaying: !prev.isPlaying }
+          : { ...prev, isPlaying: !prev.isPlaying };
+      console.log("Updated Song:", updatedSong);
+      return updatedSong;
+    });
   };
-
   const handleOnLike = () => {
-    if (!isLiked) setLikedPlaylists((prev) => [...prev, albumId]);
+    if (!isLiked) setLikedPlaylists((prev) => [...prev, id]);
     else {
-      setLikedPlaylists((prev) => prev.filter((album) => album !== albumId));
+      setLikedPlaylists((prev) => prev.filter((album) => album !== id));
     }
     setIsLiked((prev) => !prev);
   };
 
   useEffect(() => {
-    if (Number(albumId) !== 0) {
+    if (Number(id) !== 0) {
       setLoading(true);
-      fetchTracks(albumId);
+      fetchTracks(id);
     } else {
       setTracks(likedSongs);
     }
@@ -89,6 +97,13 @@ function PlaylistPage({ title }) {
       </div>
     );
   };
+
+  useEffect(() => {
+    if (!song.name) {
+      setSong((prev) => ({ ...prev, isPlaying: false }));
+    }
+  }, []);
+
   if (error) return <p>{error}</p>;
 
   return (
@@ -102,7 +117,7 @@ function PlaylistPage({ title }) {
             {!loading ? (
               <img
                 src={
-                  Number(albumId) !== 0
+                  Number(id) !== 0
                     ? tracks && tracks[0] && tracks[0].album_image
                     : LIKEDSONGS
                 }
@@ -121,7 +136,7 @@ function PlaylistPage({ title }) {
           <div className="playlist-exp">
             <h1>
               {!loading ? (
-                Number(albumId) !== 0 ? (
+                Number(id) !== 0 ? (
                   tracks && tracks[0] && tracks[0].album_name
                 ) : (
                   "Beğenilen Şarkılar"
@@ -134,7 +149,6 @@ function PlaylistPage({ title }) {
                   width={470}
                 />
               )}
-              {}
             </h1>
             <p>The essential tracks,all in one playlist</p>
             <div className="spotify-exp">
@@ -158,7 +172,7 @@ function PlaylistPage({ title }) {
           </div>
 
           <div className="playlist-play">
-            {songStatus ? (
+            {!song.isPlaying ? (
               <FilledPlayIcon onClick={handleSongStatus} color="#1ED760" />
             ) : (
               <FilledPauseIcon onClick={handleSongStatus} color="#1ED760" />

@@ -14,9 +14,9 @@ import Song from "../Song/Song";
 
 function SongPlayer() {
   const navigate = useNavigate();
-  const { song } = useSong();
+  const { song, setSong } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
-  const [songStatus, setSongStatus] = useState(true);
+  // const [songStatus, setSongStatus] = useState(true);
   const [isLiked, setIsLiked] = useState(
     likedSongs.some((songPrev) => songPrev.id === song.id)
   );
@@ -43,13 +43,13 @@ function SongPlayer() {
 
     if (!audio) return;
 
-    if (songStatus) {
+    if (song.isPlaying) {
       audio.pause();
     } else {
       audio.play();
     }
 
-    setSongStatus((prev) => !prev);
+    setSong((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
   };
 
   const openSongPlayer = () => {
@@ -65,22 +65,22 @@ function SongPlayer() {
 
   useEffect(() => {
     setIsLiked(likedSongs.some((songPrev) => songPrev.id === song.id));
-    setSongStatus(true);
-  }, [song]);
+    setSong((prev) => ({ ...prev, isPlaying: true }));
+  }, []);
 
-  useEffect(() => {
-    if (song.audio) {
-      const audio = audioRef.current;
+  // useEffect(() => {
+  //   if (song.audio) {
+  //     const audio = audioRef.current;
 
-      if (!audio) return;
+  //     if (!audio) return;
 
-      if (!songStatus) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
-    }
-  }, [song, songStatus]);
+  //     if (!song.isPlaying) {
+  //       audio.pause();
+  //     } else {
+  //       audio.play();
+  //     }
+  //   }
+  // }, [song.isPlaying]);
 
   return (
     song.name && (
@@ -107,7 +107,7 @@ function SongPlayer() {
             <FavoriteIcon onClick={handleLike} />
           )}
 
-          {!songStatus ? (
+          {!song.isPlaying ? (
             <PlayIcon onClick={handlePlay} color="white" />
           ) : (
             <PauseIcon onClick={handlePlay} color="white" />
