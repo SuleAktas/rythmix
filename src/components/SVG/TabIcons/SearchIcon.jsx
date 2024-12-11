@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchIcon = (props) => (
+const SearchIcon = ({ isSelected, onClick, className, ...props }) => (
   <svg
     onClick={props.onClick}
     className={`icon ${props.className || ""}`}
