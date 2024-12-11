@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import PauseIcon from "../SVG/PauseIcon";
 import { useRef } from "react";
+import Song from "../Song/Song";
 
 function SongPlayer() {
   const navigate = useNavigate();
@@ -20,6 +21,10 @@ function SongPlayer() {
     likedSongs.some((songPrev) => songPrev.id === song.id)
   );
   const audioRef = useRef(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => setIsModalOpen(false);
 
   const handleLike = (e) => {
     e.stopPropagation();
@@ -48,13 +53,14 @@ function SongPlayer() {
   };
 
   const openSongPlayer = () => {
-    const searchParams = new URLSearchParams();
-    searchParams.append("id", song.id);
-    navigate({
-      pathname: "/song",
-      search: searchParams.toString(),
-      state: { from: window.location.pathname },
-    });
+    // const searchParams = new URLSearchParams();
+    // searchParams.append("id", song.id);
+    // navigate({
+    //   pathname: "/song",
+    //   search: searchParams.toString(),
+    //   state: { from: window.location.pathname },
+    // });
+    setIsModalOpen(true);
   };
 
   useEffect(() => {
@@ -79,6 +85,8 @@ function SongPlayer() {
   return (
     song.name && (
       <div className="song-player-container" onClick={openSongPlayer}>
+        {isModalOpen && <Song onClose={closeModal} />}
+
         <div className="song-player-exp-box">
           <div className="song-player-image-box">
             <img

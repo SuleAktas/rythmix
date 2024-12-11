@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import "./Song.css";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { useLikedSongs } from "../../contexts/LikedSongContext";
 import FavoriteIcon from "../SVG/FavoriteIcon";
@@ -13,33 +13,38 @@ import FilledPlayIcon from "../SVG/FilledPlayIcon";
 import FilledPauseIcon from "../SVG/FilledPauseIcon";
 import SkipNextIcon from "../SVG/SkipNextIcon";
 import SkipPreviousIcon from "../SVG/SkipPreviousIcon";
-import { useSongApi } from "../../contexts/SongApiContext";
 import { FastAverageColor } from "fast-average-color";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-function Song() {
-  const DOWNICON = process.env.PUBLIC_URL + "/images/DOWNICON.png";
-  const MOREICON = process.env.PUBLIC_URL + "/images/MOREICON.png";
-  const AGAINICON = process.env.PUBLIC_URL + "/images/AGAINICON.png";
-  const SHUFFLEICON = process.env.PUBLIC_URL + "/images/SHUFFLEICON.png";
+import { useSong } from "../../contexts/SongContext";
+import DownIcon from "../SVG/DownIcon";
+import MoreIcon from "../SVG/MoreIcon";
+import ShuffleIcon from "../SVG/ShuffleIcon";
+import ReplayIcon from "../SVG/ReplayIcon";
 
-  const { song, fetchTrackDetails } = useSongApi();
-  const [searchParams] = useSearchParams();
-  const songId = searchParams.get("id");
+function Song({ onClose }) {
+  const { song } = useSong();
+
   const { likedSongs, setLikedSongs } = useLikedSongs();
+
   const [songStatus, setSongStatus] = useState(true);
+
   const [songDuration, setSongDuration] = useState(0);
+
   const [songRemainingTime, setSongRemainingTime] = useState(0);
   const [songPastTime, setSongPastTime] = useState(0);
+
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
   const audioRef = useRef(null);
+
   const [isLiked, setIsLiked] = useState(
     likedSongs.some((songPrev) => songPrev.id === song.id)
   );
 
   const [backgroundColor, setBackgroundColor] = useState("");
+
   const mixWithBlack = (colorHex, ratio = 0.5) => {
     let r = parseInt(colorHex.slice(1, 3), 16);
     let g = parseInt(colorHex.slice(3, 5), 16);
@@ -51,21 +56,22 @@ function Song() {
 
     return `rgb(${r}, ${g}, ${b})`;
   };
-  useEffect(() => {
-    if (song.album_image) {
-      const fac = new FastAverageColor();
 
-      fac
-        .getColorAsync(song.album_image)
-        .then((color) => {
-          const mixedColor = mixWithBlack(color.hex, 0.5);
-          setBackgroundColor(mixedColor);
-        })
-        .catch((err) => {
-          console.error("Error fetching color:", err);
-        });
+  const handleLike = () => {
+    if (!isLiked) setLikedSongs((prev) => [...prev, song]);
+    else {
+      setLikedSongs((prev) => prev.filter((prevSong) => prevSong !== song));
     }
-  }, [song.album_image]);
+    setIsLiked((prev) => !prev);
+  };
+
+  const formatTime = (seconds) => {
+    const totalSeconds = Math.floor(seconds);
+    const minutes = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+  };
+
   const handleSongStatus = () => {
     setSongStatus((prev) => !prev);
     if (!audioRef.current) return;
@@ -90,33 +96,35 @@ function Song() {
       `${progressPercentage}%`
     );
   };
-  const handleLike = () => {
-    if (!isLiked) setLikedSongs((prev) => [...prev, song]);
-    else {
-      setLikedSongs((prev) => prev.filter((prevSong) => prevSong !== song));
-    }
-    setIsLiked((prev) => !prev);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(onClose, 100);
   };
 
-  const formatTime = (seconds) => {
-    const totalSeconds = Math.floor(seconds);
-    const minutes = Math.floor(totalSeconds / 60);
-    const secs = totalSeconds % 60;
-    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
-  };
+  useEffect(() => {
+    const fac = new FastAverageColor();
+
+    fac
+      .getColorAsync(song.album_image)
+      .then((color) => {
+        const mixedColor = mixWithBlack(color.hex, 0.5);
+        setBackgroundColor(mixedColor);
+      })
+      .catch((err) => {
+        console.error("Error fetching color:", err);
+      });
+  }, []);
+
   useEffect(() => {
     setIsVisible(true);
-  }, [isVisible, navigate]);
+  }, [isVisible]);
 
-  useEffect(() => {
-    if (songId) {
-      fetchTrackDetails(songId);
-    }
-  }, [songId]);
   useEffect(() => {
     setSongRemainingTime(song.duration);
     setSongDuration(song.duration);
   }, [song]);
+
   useEffect(() => {
     if (audioRef.current) {
       const handleLoadedMetadata = () => {
@@ -144,12 +152,14 @@ function Song() {
       };
     }
   }, []);
+
   useEffect(() => {
     const progressPercentage = (songPastTime / songDuration) * 100;
     document
       .querySelector(".custom-range")
       .style.setProperty("--progress-percentage", `${progressPercentage}%`);
   }, [songDuration, songPastTime]);
+
   return (
     song && (
       <div
@@ -160,12 +170,12 @@ function Song() {
       >
         <audio ref={audioRef} src={song && song.audio} />
         <div className="song-header">
-          <div className="song-down-icon" onClick={() => navigate(-1)}>
-            <img src={DOWNICON} alt="Coldplay"></img>
+          <div className="song-down-icon" onClick={handleClose}>
+            <DownIcon />
           </div>
           <div className="song-title">{song && song.artist_name}</div>
           <div className="song-more">
-            <img src={MOREICON} alt="Coldplay"></img>
+            <MoreIcon />
           </div>
         </div>
 
@@ -214,11 +224,7 @@ function Song() {
         </div>
 
         <div className="song-actions">
-          <img
-            className="shuffle-again-icon"
-            src={SHUFFLEICON}
-            alt="Coldplay"
-          ></img>
+          <ShuffleIcon />
 
           <SkipPreviousIcon />
 
@@ -231,11 +237,7 @@ function Song() {
           )}
           <SkipNextIcon />
 
-          <img
-            className="shuffle-again-icon"
-            src={AGAINICON}
-            alt="Coldplay"
-          ></img>
+          <ReplayIcon />
         </div>
         <div className="song-actions-more">
           <DevicesIcon />
