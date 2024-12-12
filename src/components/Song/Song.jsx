@@ -22,7 +22,7 @@ import MoreIcon from "../SVG/MoreIcon";
 import ShuffleIcon from "../SVG/ShuffleIcon";
 import ReplayIcon from "../SVG/ReplayIcon";
 
-function Song({ onClose }) {
+function Song({ onClose, audioRef }) {
   const { song, setSong } = useSong();
 
   const { likedSongs, setLikedSongs } = useLikedSongs();
@@ -36,8 +36,6 @@ function Song({ onClose }) {
 
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
-
-  const audioRef = useRef(null);
 
   const [isLiked, setIsLiked] = useState(
     likedSongs.some((songPrev) => songPrev.id === song.id)
@@ -72,30 +70,9 @@ function Song({ onClose }) {
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  const handleSongStatus = () => {
-    // setSongStatus((prev) => !prev);
+  const handleSongStatusClick = () => {
     setSong((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
-    // if (!audioRef.current) return;
-    // if (!song.isPlaying) {
-    //   audioRef.current.pause();
-    // } else {
-    //   audioRef.current.play();
-    // }
   };
-  useEffect(() => {
-    debugger;
-    if (song.audio) {
-      const audio = audioRef.current;
-
-      if (!audio) return;
-
-      if (!song.isPlaying) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
-    }
-  }, [song]);
 
   const handleSeek = (event) => {
     const newTime = Number(event.target.value);
@@ -138,7 +115,6 @@ function Song({ onClose }) {
   }, [isVisible]);
 
   useEffect(() => {
-    debugger;
     setSongRemainingTime(song.duration);
     setSongDuration(song.duration);
   }, [song]);
@@ -186,7 +162,6 @@ function Song({ onClose }) {
           isVisible ? "slide-up" : ""
         }`}
       >
-        <audio ref={audioRef} src={song && song.audio} />
         <div className="song-header">
           <div className="song-down-icon" onClick={handleClose}>
             <DownIcon />
@@ -247,9 +222,9 @@ function Song({ onClose }) {
           <SkipPreviousIcon />
 
           {!song.isPlaying ? (
-            <FilledPlayIcon onClick={handleSongStatus} color="white" />
+            <FilledPlayIcon onClick={handleSongStatusClick} color="white" />
           ) : (
-            <FilledPauseIcon onClick={handleSongStatus} color="white" />
+            <FilledPauseIcon onClick={handleSongStatusClick} color="white" />
           )}
 
           <SkipNextIcon />

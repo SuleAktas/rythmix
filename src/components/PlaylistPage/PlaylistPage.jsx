@@ -17,17 +17,29 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useSong } from "../../contexts/SongContext";
 
+const clientId = "99c16ea4";
+
 function PlaylistPage({ title }) {
   const LIKEDSONGS = process.env.PUBLIC_URL + "/images/LIKEDSONGS.jpeg";
 
-  const { id } = useParams();
+  const [tracks, setTracks] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchTracks = async (albumId) => {
+    const response = await fetch(
+      `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&album_id=${albumId}`
+    );
+    const data = await response.json();
+    return data.results;
+  };
+
+  const { id, songId } = useParams();
 
   const location = useLocation();
 
   const navigate = useNavigate();
 
-  const { tracks, loading, error, fetchTracks, setTracks, setLoading } =
-    useSongApi();
+  const { error } = useSongApi();
 
   const { likedSongs } = useLikedSongs();
 
@@ -39,16 +51,31 @@ function PlaylistPage({ title }) {
     likedPlaylists.some((songPrev) => songPrev.id === id)
   );
 
-  const handleSongStatus = () => {
-    setSong((prev) => {
-      const updatedSong =
-        !prev.name && tracks.length !== 0
-          ? { ...tracks[0], isPlaying: !prev.isPlaying }
-          : { ...prev, isPlaying: !prev.isPlaying };
-      console.log("Updated Song:", updatedSong);
-      return updatedSong;
-    });
+  // const handleSongStatus = () => {
+  //   setSong((prev) => {
+  //     const updatedSong =
+  //       !prev.name && tracks.length !== 0
+  //         ? { ...tracks[0], isPlaying: !prev.isPlaying }
+  //         : { ...prev, isPlaying: !prev.isPlaying };
+  //     return updatedSong;
+  //   });
+  // };
+
+  const handleSongStatusChange = () => {
+    if (!songId) {
+      navigate(`/playlist/${id}/song/${tracks[0].id}`);
+      setSong({
+        ...tracks[0],
+        isPlaying: true,
+      });
+    } else {
+      setSong((prev) => ({
+        ...prev,
+        isPlaying: !prev.isPlaying,
+      }));
+    }
   };
+
   const handleOnLike = () => {
     if (!isLiked) setLikedPlaylists((prev) => [...prev, id]);
     else {
@@ -58,12 +85,28 @@ function PlaylistPage({ title }) {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const tracks = await fetchTracks(id);
+      if (songId) {
+        const song = tracks.find((e) => e.id === songId);
+        if (song) {
+          setSong({
+            ...song,
+            isPlaying: true,
+          });
+        }
+      }
+
+      setTracks(tracks);
+      setLoading(false);
+    };
+
     if (Number(id) !== 0) {
       setLoading(true);
-      fetchTracks(id);
-    } else {
-      setTracks(likedSongs);
+      fetchData();
     }
+
+    return () => {};
   }, [location.search]);
 
   const songItemSkeleton = () => {
@@ -97,12 +140,6 @@ function PlaylistPage({ title }) {
       </div>
     );
   };
-
-  useEffect(() => {
-    if (!song.name) {
-      setSong((prev) => ({ ...prev, isPlaying: false }));
-    }
-  }, []);
 
   if (error) return <p>{error}</p>;
 
@@ -173,9 +210,15 @@ function PlaylistPage({ title }) {
 
           <div className="playlist-play">
             {!song.isPlaying ? (
-              <FilledPlayIcon onClick={handleSongStatus} color="#1ED760" />
+              <FilledPlayIcon
+                onClick={handleSongStatusChange}
+                color="#1ED760"
+              />
             ) : (
-              <FilledPauseIcon onClick={handleSongStatus} color="#1ED760" />
+              <FilledPauseIcon
+                onClick={handleSongStatusChange}
+                color="#1ED760"
+              />
             )}
           </div>
         </div>

@@ -39,53 +39,32 @@ function SongPlayer() {
 
   const handlePlay = (e) => {
     e.stopPropagation();
+    setSong((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
+  };
+
+  useEffect(() => {
     const audio = audioRef.current;
 
     if (!audio) return;
 
-    if (song.isPlaying) {
+    if (!song.isPlaying) {
       audio.pause();
     } else {
       audio.play();
     }
-
-    setSong((prev) => ({ ...prev, isPlaying: !prev.isPlaying }));
-  };
-
-  const openSongPlayer = () => {
-    // const searchParams = new URLSearchParams();
-    // searchParams.append("id", song.id);
-    // navigate({
-    //   pathname: "/song",
-    //   search: searchParams.toString(),
-    //   state: { from: window.location.pathname },
-    // });
-    setIsModalOpen(true);
-  };
+  }, [song.isPlaying]);
 
   useEffect(() => {
     setIsLiked(likedSongs.some((songPrev) => songPrev.id === song.id));
-    setSong((prev) => ({ ...prev, isPlaying: true }));
   }, []);
-
-  // useEffect(() => {
-  //   if (song.audio) {
-  //     const audio = audioRef.current;
-
-  //     if (!audio) return;
-
-  //     if (!song.isPlaying) {
-  //       audio.pause();
-  //     } else {
-  //       audio.play();
-  //     }
-  //   }
-  // }, [song.isPlaying]);
 
   return (
     song.name && (
-      <div className="song-player-container" onClick={openSongPlayer}>
-        {isModalOpen && <Song onClose={closeModal} />}
+      <div
+        className="song-player-container"
+        onClick={() => setIsModalOpen(true)}
+      >
+        {isModalOpen && <Song onClose={closeModal} audioRef={audioRef} />}
 
         <div className="song-player-exp-box">
           <div className="song-player-image-box">
@@ -112,6 +91,13 @@ function SongPlayer() {
           ) : (
             <PauseIcon onClick={handlePlay} color="white" />
           )}
+
+          {/* <iframe
+            src={song.audio}
+            allow="autoplay"
+            style={{ display: "none" }}
+            ref={audioRef} 
+          ></iframe> */}
           <audio ref={audioRef} src={song.audio} />
         </div>
       </div>
