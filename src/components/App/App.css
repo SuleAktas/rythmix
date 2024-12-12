@@ -6,9 +6,6 @@
   overflow: hidden;
 }
 
-.app-container.full {
-  height: 100%;
-}
 .icon {
   cursor: pointer;
   transition: transform 0.2s, background-color 0.2s;
