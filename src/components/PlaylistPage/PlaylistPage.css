@@ -5,7 +5,7 @@
   padding: 0;
   flex: 1;
   padding-bottom: 130px;
-  min-width: 400px;
+  min-width: 300px;
 }
 .playlistpage-box {
   background: linear-gradient(#0080ae 10%, #0080ae 10%, #121212 100%);
