@@ -1,6 +1,6 @@
-# 🎶 Spotify
+# 🎶 Rythmix
 
-Spotify is a music streaming application that allow users to search for songs, like tracks and playlists, and
+Rythmix is a music streaming application that allow users to search for songs, like tracks and playlists, and
 play music.
 
 
