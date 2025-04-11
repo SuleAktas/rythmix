@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PlaylistSong from './components/PlaylistSong/PlaylistSong';
 import './PlaylistPage.css';
-import { useSongApi } from '../../contexts/SongApiContext';
 import { useLikedPlaylists } from '../../contexts/LikedPlaylistContext';
 import FilledPlayIcon from '../SVG/FilledPlayIcon';
 import FilledPauseIcon from '../SVG/FilledPauseIcon';
@@ -16,8 +15,6 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useSong } from '../../contexts/SongContext';
 
-const clientId = '99c16ea4';
-
 function PlaylistPage({ title }) {
 	const LIKEDSONGS = process.env.PUBLIC_URL + '/images/LIKEDSONGS.jpeg';
 
@@ -26,7 +23,7 @@ function PlaylistPage({ title }) {
 
 	const fetchTracks = async albumId => {
 		const response = await fetch(
-			`https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&album_id=${albumId}`
+			`https://api.jamendo.com/v3.0/tracks/?client_id=${process.env.REACT_APP_JAMENDO_CLIENT_ID}&album_id=${albumId}`
 		);
 		const data = await response.json();
 		return data.results;
@@ -37,8 +34,6 @@ function PlaylistPage({ title }) {
 	const location = useLocation();
 
 	const navigate = useNavigate();
-
-	const { error } = useSongApi();
 
 	const { likedPlaylists, setLikedPlaylists } = useLikedPlaylists();
 
@@ -127,8 +122,6 @@ function PlaylistPage({ title }) {
 			</div>
 		);
 	};
-
-	if (error) return <p>{error}</p>;
 
 	return (
 		<div className="playlistpage-container">
