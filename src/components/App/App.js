@@ -1,12 +1,12 @@
-import HomePage from "../HomePage/HomePage";
-import Footer from "../Layout/Footer/Footer";
-import SearchPage from "../SearchPage/SearchPage";
+import HomePage from "../HomePage/HomePage.jsx";
+import Footer from "../Layout/Footer/Footer.jsx";
+import SearchPage from "../SearchPage/SearchPage.jsx";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import PlaylistPage from "../PlaylistPage/PlaylistPage";
-import SongPlayer from "../SongPlayer/SongPlayer";
-import LibraryPage from "../LibraryPage/LibraryPage";
-import { AppProvider } from "../../providers/AppProvider";
+import PlaylistPage from "../PlaylistPage/PlaylistPage.jsx";
+import SongPlayer from "../SongPlayer/SongPlayer.jsx";
+import LibraryPage from "../LibraryPage/LibraryPage.jsx";
+import { AppProvider } from "../../providers/AppProvider.jsx";
 
 function App() {
   return (
