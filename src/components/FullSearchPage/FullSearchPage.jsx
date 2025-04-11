@@ -9,7 +9,7 @@ import BackIcon from '../SVG/BackIcon';
 import './FullSearchPage.css';
 
 function FullSearchPage({ onClose }) {
-	const { tracks, setTracks } = useState([]);
+	const [tracks, setTracks] = useState([]);
 
 	useEffect(() => {
 		client(
