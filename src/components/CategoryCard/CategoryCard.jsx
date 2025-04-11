@@ -10,6 +10,12 @@ function CategoryCard({ title }) {
 
   return (
     <div className="category" style={{ backgroundColor: bgColor }}>
+
+
+
+
+
+
       <div className="category-title">{title}</div>
     </div>
   );

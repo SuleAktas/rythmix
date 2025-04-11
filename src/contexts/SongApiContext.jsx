@@ -14,7 +14,7 @@ export const SongApiProvider = ({ children }) => {
   const fetchTracks = async (albumId) => {
     try {
       const response = await fetch(
-        `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&album_id=${albumId}`
+        `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&album_id=${albumId}`,
       );
       const data = await response.json();
       setTracks(data.results);
@@ -27,7 +27,7 @@ export const SongApiProvider = ({ children }) => {
   const fetchAllTracks = async () => {
     try {
       const response = await fetch(
-        `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&tags=rock`
+        `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&tags=rock`,
       );
       const data = await response.json();
       setTracks(data.results);
@@ -40,7 +40,7 @@ export const SongApiProvider = ({ children }) => {
   const fetchAlbums = async () => {
     try {
       const response = await fetch(
-        `https://api.jamendo.com/v3.0/albums/?client_id=${clientId}`
+        `https://api.jamendo.com/v3.0/albums/?client_id=${clientId}`,
       );
       const data = await response.json();
       setAlbums(data.results);
@@ -53,7 +53,7 @@ export const SongApiProvider = ({ children }) => {
   const fetchTrackDetails = async (songId) => {
     try {
       const response = await fetch(
-        `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&id=${songId}`
+        `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&id=${songId}`,
       );
       const data = await response.json();
       setSong(data.results[0]);

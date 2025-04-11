@@ -15,7 +15,7 @@ function SongPlayer() {
   const { song, setSong } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const [isLiked, setIsLiked] = useState(
-    likedSongs.some((songPrev) => songPrev.id === song.id)
+    likedSongs.some((songPrev) => songPrev.id === song.id),
   );
   const audioRef = useRef(null);
 
@@ -29,7 +29,7 @@ function SongPlayer() {
     if (!isLiked) setLikedSongs((prev) => [...prev, song]);
     else
       setLikedSongs((prev) =>
-        prev.filter((prevSong) => prevSong.id !== song.id)
+        prev.filter((prevSong) => prevSong.id !== song.id),
       );
     setIsLiked((prev) => !prev);
   };
@@ -53,7 +53,7 @@ function SongPlayer() {
 
   useEffect(() => {
     setIsLiked(likedSongs.some((songPrev) => songPrev.id === song.id));
-  }, [likedSongs,song.id]);
+  }, [likedSongs, song.id]);
 
   return (
     song.name && (
@@ -89,7 +89,6 @@ function SongPlayer() {
             <PauseIcon onClick={handlePlay} color="white" />
           )}
 
-      
           <audio ref={audioRef} src={song.audio} />
         </div>
       </div>

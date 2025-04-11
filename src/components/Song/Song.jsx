@@ -25,7 +25,6 @@ function Song({ onClose, audioRef }) {
 
   const { likedSongs, setLikedSongs } = useLikedSongs();
 
-
   const [songDuration, setSongDuration] = useState(0);
 
   const [songRemainingTime, setSongRemainingTime] = useState(0);
@@ -34,7 +33,7 @@ function Song({ onClose, audioRef }) {
   const [isVisible, setIsVisible] = useState(false);
 
   const [isLiked, setIsLiked] = useState(
-    likedSongs.some((songPrev) => songPrev.id === song.id)
+    likedSongs.some((songPrev) => songPrev.id === song.id),
   );
 
   const [backgroundColor, setBackgroundColor] = useState("");
@@ -81,7 +80,7 @@ function Song({ onClose, audioRef }) {
     const progressPercentage = (newTime / songDuration) * 100;
     event.target.style.setProperty(
       "--progress-percentage",
-      `${progressPercentage}%`
+      `${progressPercentage}%`,
     );
   };
 
@@ -104,7 +103,7 @@ function Song({ onClose, audioRef }) {
       .catch((err) => {
         console.error("Error fetching color:", err);
       });
-  }, [setSong,song.album_image]);
+  }, [setSong, song.album_image]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -124,7 +123,7 @@ function Song({ onClose, audioRef }) {
       const handleTimeUpdate = () => {
         setSongPastTime(audioRef.current.currentTime);
         setSongRemainingTime(
-          audioRef.current.duration - audioRef.current.currentTime
+          audioRef.current.duration - audioRef.current.currentTime,
         );
       };
 
@@ -135,7 +134,7 @@ function Song({ onClose, audioRef }) {
         if (audioRef.current) {
           audioRef.current.removeEventListener(
             "loadedmetadata",
-            handleLoadedMetadata
+            handleLoadedMetadata,
           );
           audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
         }

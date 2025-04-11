@@ -1,22 +1,24 @@
 .App {
-	height: 100%;
+  height: 100%;
 }
 
 .app-container {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .icon {
-	cursor: pointer;
-	transition: transform 0.2s, background-color 0.2s;
-	border-radius: 50%;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+  border-radius: 50%;
 }
 
 .icon:focus {
-	transform: scale(1);
-	outline: none;
+  transform: scale(1);
+  outline: none;
 }
 
 .icon:hover {
-	transform: scale(1.1);
+  transform: scale(1.1);
 }
