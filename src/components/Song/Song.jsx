@@ -27,7 +27,6 @@ function Song({ onClose, audioRef }) {
 
   const { likedSongs, setLikedSongs } = useLikedSongs();
 
-  // const [songStatus, setSongStatus] = useState(true);
 
   const [songDuration, setSongDuration] = useState(0);
 

@@ -51,15 +51,7 @@ function PlaylistPage({ title }) {
     likedPlaylists.some((songPrev) => songPrev.id === id)
   );
 
-  // const handleSongStatus = () => {
-  //   setSong((prev) => {
-  //     const updatedSong =
-  //       !prev.name && tracks.length !== 0
-  //         ? { ...tracks[0], isPlaying: !prev.isPlaying }
-  //         : { ...prev, isPlaying: !prev.isPlaying };
-  //     return updatedSong;
-  //   });
-  // };
+ 
 
   const handleSongStatusChange = () => {
     if (!songId) {

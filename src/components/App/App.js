@@ -9,7 +9,6 @@ import LibraryPage from "../LibraryPage/LibraryPage";
 import { AppProvider } from "../../providers/AppProvider";
 
 function App() {
-  // TODO: song.js acildiginda footerin kapatilmasi gerekiyor.
   return (
     <div className={`app-container`}>
       <AppProvider>

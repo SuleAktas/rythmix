@@ -16,7 +16,6 @@ function SongPlayer() {
   const navigate = useNavigate();
   const { song, setSong } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
-  // const [songStatus, setSongStatus] = useState(true);
   const [isLiked, setIsLiked] = useState(
     likedSongs.some((songPrev) => songPrev.id === song.id)
   );
@@ -92,12 +91,7 @@ function SongPlayer() {
             <PauseIcon onClick={handlePlay} color="white" />
           )}
 
-          {/* <iframe
-            src={song.audio}
-            allow="autoplay"
-            style={{ display: "none" }}
-            ref={audioRef} 
-          ></iframe> */}
+      
           <audio ref={audioRef} src={song.audio} />
         </div>
       </div>
