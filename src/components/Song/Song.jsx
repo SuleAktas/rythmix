@@ -2,8 +2,6 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import "./Song.css";
-import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
 import { useLikedSongs } from "../../contexts/LikedSongContext";
 import FavoriteIcon from "../SVG/FavoriteIcon";
 import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
@@ -34,7 +32,6 @@ function Song({ onClose, audioRef }) {
   const [songPastTime, setSongPastTime] = useState(0);
 
   const [isVisible, setIsVisible] = useState(false);
-  const navigate = useNavigate();
 
   const [isLiked, setIsLiked] = useState(
     likedSongs.some((songPrev) => songPrev.id === song.id)
@@ -107,7 +104,7 @@ function Song({ onClose, audioRef }) {
       .catch((err) => {
         console.error("Error fetching color:", err);
       });
-  }, []);
+  }, [setSong,song.album_image]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -144,7 +141,7 @@ function Song({ onClose, audioRef }) {
         }
       };
     }
-  }, []);
+  }, [audioRef]);
 
   useEffect(() => {
     const progressPercentage = (songPastTime / songDuration) * 100;
@@ -204,8 +201,7 @@ function Song({ onClose, audioRef }) {
             max={songDuration}
             value={songPastTime}
             onChange={handleSeek}
-            className="custom-range"
-            style={{ width: "100%" }}
+            className="custom-range w-full"
           />
         </div>
         <div className="song-time">

@@ -6,14 +6,12 @@ import PlayIcon from "../SVG/PlayIcon";
 import FavoriteIcon from "../SVG/FavoriteIcon";
 import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import PauseIcon from "../SVG/PauseIcon";
 import { useRef } from "react";
 import Song from "../Song/Song";
 
 function SongPlayer() {
-  const navigate = useNavigate();
   const { song, setSong } = useSong();
   const { likedSongs, setLikedSongs } = useLikedSongs();
   const [isLiked, setIsLiked] = useState(
@@ -55,7 +53,7 @@ function SongPlayer() {
 
   useEffect(() => {
     setIsLiked(likedSongs.some((songPrev) => songPrev.id === song.id));
-  }, []);
+  }, [likedSongs,song.id]);
 
   return (
     song.name && (

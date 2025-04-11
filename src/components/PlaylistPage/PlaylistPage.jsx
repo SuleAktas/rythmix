@@ -12,7 +12,6 @@ import DetailsIcon from "../SVG/DetailsIcon";
 import SpotifyIcon from "../SVG/SpotifyIcon";
 import BackIcon from "../SVG/BackIcon";
 import FilledFavoriteIcon from "../SVG/FilledFavoriteIcon";
-import { useLikedSongs } from "../../contexts/LikedSongContext";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useSong } from "../../contexts/SongContext";
@@ -40,8 +39,6 @@ function PlaylistPage({ title }) {
   const navigate = useNavigate();
 
   const { error } = useSongApi();
-
-  const { likedSongs } = useLikedSongs();
 
   const { likedPlaylists, setLikedPlaylists } = useLikedPlaylists();
 
@@ -99,7 +96,7 @@ function PlaylistPage({ title }) {
     }
 
     return () => {};
-  }, [location.search]);
+  }, [location.search,id, setSong, songId]);
 
   const songItemSkeleton = () => {
     return (

@@ -12,7 +12,7 @@ function FullSearchPage({ onClose }) {
 
   useEffect(() => {
     fetchAllTracks();
-  }, []);
+  }, [fetchAllTracks]);
   return (
     <div className="full-search-container">
       <div className="search-header">
