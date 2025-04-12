@@ -45,9 +45,22 @@ function SongPlayer() {
 		if (!song.isPlaying) {
 			audio.pause();
 		} else {
-			audio.play();
+			const playPromise = audio.play();
+
+			if (playPromise !== undefined) {
+				playPromise.catch(err => {
+					console.error('Audio play error:', err);
+				});
+			}
 		}
-	}, [song.isPlaying]);
+
+		return () => {
+			if (audio) {
+				audio.pause();
+				audio.currentTime = 0;
+			}
+		};
+	}, [song, song.isPlaying]);
 
 	useEffect(() => {
 		setIsLiked(likedSongs.some(songPrev => songPrev.id === song.id));
