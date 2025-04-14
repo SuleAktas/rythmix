@@ -1,4 +1,4 @@
-# 🎶 Rythmix
+# 🎶 Rythmix - [Live Demo](https://rythmix-rho.vercel.app/)
 
 Rythmix is a music streaming application that allow users to search for songs, like tracks and playlists, and
 play music.
