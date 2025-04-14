@@ -5,11 +5,10 @@ import LibraryHeader from "./components/LibraryHeader/LibraryHeader";
 import "./LibraryPage.css";
 
 function LibraryPage() {
-  const LIKEDSONGS = process.env.PUBLIC_URL + "/images/LIKEDSONGS.jpeg";
   const { likedPlaylists } = useLikedPlaylists();
 
   const likedSongPlaylist = {
-    album_image: LIKEDSONGS,
+    album_image: "/images/LIKEDSONGS.jpeg",
     name: "Beğenilen Şarkılar",
     artist_name: "Çalma Listesi",
   };

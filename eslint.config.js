@@ -1,33 +1,33 @@
-import { defineConfig } from "eslint/config";
-import globals from "globals";
 import js from "@eslint/js";
-import pluginReact from "eslint-plugin-react";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
 
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,jsx}"] },
+export default [
+  { ignores: ["dist"] },
   {
-    files: ["**/*.{js,mjs,cjs,jsx}"],
-    languageOptions: { globals: globals.browser },
-  },
-  {
-    files: ["**/*.{js,mjs,cjs,jsx}"],
-    plugins: { js },
-    extends: ["js/recommended"],
-  },
-  pluginReact.configs.flat.recommended,
-  pluginReact.configs.flat["jsx-runtime"],
-  {
-    files: ["**/*.{js,mjs,cjs,jsx}"],
-    settings: {
-      react: {
-        version: "detect",
+    files: ["**/*.{js,jsx}"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        ecmaFeatures: { jsx: true },
+        sourceType: "module",
       },
     },
+    plugins: {
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+      "react-refresh/only-export-components": [
+        "warn",
+        { allowConstantExport: true },
+      ],
+    },
   },
-  {
-    "extends": [
-      "react-app",
-      "plugin:prettier/recommended"
-    ]
-  }
-]);
+];
