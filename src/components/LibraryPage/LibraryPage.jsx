@@ -1,25 +1,35 @@
-import React from "react";
-import { useLikedPlaylists } from "../../contexts/LikedPlaylistContext";
-import PlaylistSong from "../PlaylistPage/components/PlaylistSong/PlaylistSong";
-import LibraryHeader from "./components/LibraryHeader/LibraryHeader";
-import "./LibraryPage.css";
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import client from '../../services/client';
+import PlaylistSong from '../PlaylistPage/components/PlaylistSong/PlaylistSong';
+import LibraryHeader from './components/LibraryHeader/LibraryHeader';
+import './LibraryPage.css';
 
 function LibraryPage() {
-  const { likedPlaylists } = useLikedPlaylists();
+	const [likedPlaylists, setLikedPlaylists] = useState([]);
 
-  const likedSongPlaylist = {
-    album_image: "/images/LIKEDSONGS.jpeg",
-    name: "Beğenilen Şarkılar",
-    artist_name: "Çalma Listesi",
-  };
-  return (
-    <div className="library-container">
-      <LibraryHeader></LibraryHeader>
-      <PlaylistSong song={likedSongPlaylist} />
-      {likedPlaylists.length > 0 &&
-        likedPlaylists.map((playlist) => <PlaylistSong song={playlist} />)}
-    </div>
-  );
+	useEffect(() => {
+		client(`${import.meta.env.VITE_BACKEND_URL}user/likedPlaylists`).then(
+			response => {
+				if (response.status === 'Success') {
+					setLikedPlaylists(response.data);
+				} else {
+					console.error('Album cannot be found!');
+				}
+			}
+		);
+	}, [setLikedPlaylists]);
+
+	return (
+		<div className="library-container">
+			<LibraryHeader></LibraryHeader>
+
+			{likedPlaylists.length > 0 &&
+				likedPlaylists.map(playlist => (
+					<PlaylistSong song={playlist} playlist={playlist} />
+				))}
+		</div>
+	);
 }
 
 export default LibraryPage;

@@ -31,11 +31,7 @@ function Slider({ title }) {
 	};
 
 	useEffect(() => {
-		client(
-			`https://api.jamendo.com/v3.0/albums/?client_id=${
-				import.meta.env.VITE_JAMENDO_CLIENT_ID
-			}`
-		).then(response => {
+		client(`${import.meta.env.VITE_BACKEND_URL}playlist`).then(response => {
 			if (response.status === 'Success') {
 				setAlbums(response.data);
 			} else {
@@ -48,7 +44,7 @@ function Slider({ title }) {
 		<div className="slider">
 			<div className="slider-title">{title}</div>
 			<div className="slider-container">
-				{albums.length !== 0
+				{albums?.length !== 0
 					? albums.map((album, index) => <Card key={index} album={album} />)
 					: [...Array(10)].map(() => {
 							return cardSkeleton();

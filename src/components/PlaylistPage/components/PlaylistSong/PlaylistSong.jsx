@@ -1,75 +1,68 @@
-import React from "react";
-import "./PlaylistSong.css";
-import { useSong } from "../../../../contexts/SongContext";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useLikedSongs } from "../../../../contexts/LikedSongContext";
-import PlaylistAddIcon from "../../../SVG/PlaylistAddIcon";
-import PlaylistCheckedIcon from "../../../SVG/PlaylistCheckedIcon";
+import React from 'react';
+import './PlaylistSong.css';
+import { useSong } from '../../../../contexts/SongContext';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import PlaylistAddIcon from '../../../SVG/PlaylistAddIcon';
+import PlaylistCheckedIcon from '../../../SVG/PlaylistCheckedIcon';
+import { usePlaying } from '../../../../contexts/PlayContext';
 
-function PlaylistSong({ order, song }) {
-  const location = useLocation();
+function PlaylistSong({ order, song, onToggleLike, playlist }) {
+	const location = useLocation();
 
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  const { setSong } = useSong();
+	const { setSong } = useSong();
+	const { setIsPlaying } = usePlaying();
 
-  const { likedSongs, setLikedSongs } = useLikedSongs();
-  const { id } = useParams();
+	const { id } = useParams();
 
-  const isLiked = likedSongs.some((songPrev) => songPrev.id === song.id);
+	const handlePlaySong = () => {
+		if (location.pathname !== '/library') {
+			setIsPlaying(true);
+			setSong({ ...song });
+			if (id) navigate(`/playlist/${id}/song/${song.id}`);
+		} else {
+			navigate(`/playlist/${playlist.id}`);
+		}
+	};
 
-  const handlePlaySong = () => {
-    if (location.pathname !== "/library") {
-      setSong({ ...song, isPlaying: true });
-      if (id) navigate(`/playlist/${id}/song/${song.id}`);
-    } else {
-      navigate("/playlist/0");
-    }
-  };
+	return (
+		song && (
+			<div className="playlist-song-item" onClick={handlePlaySong}>
+				{order && <div className="song-order">{order}</div>}
+				{song.imageUrl && !location.pathname.startsWith('/playlist') && (
+					<img className="song-order" src={song.imageUrl} alt={song.name}></img>
+				)}
 
-  const handlePlaylistAddClick = (e) => {
-    e.stopPropagation();
-    if (!likedSongs.some((songPrev) => songPrev.id === song.id)) {
-      setLikedSongs((prev) => [...prev, song]);
-    }
-  };
-
-  const handlePlaylistRemoveClick = (e) => {
-    e.stopPropagation();
-    setLikedSongs((prev) => prev.filter((songPrev) => songPrev.id !== song.id));
-  };
-
-  return (
-    song && (
-      <div className="playlist-song-item" onClick={handlePlaySong}>
-        {order && <div className="song-order">{order}</div>}
-        {song.album_image && !location.pathname.startsWith("/playlist") && (
-          <img
-            className="song-order"
-            src={song.album_image}
-            alt={song.name}
-          ></img>
-        )}
-
-        <div className="song-exp">
-          <span className="song-title">{song.name}</span>
-          <span className="singer">{song.artist_name}</span>
-        </div>
-        {location.pathname !== "/library" && (
-          <div className="actions">
-            {isLiked ? (
-              <PlaylistCheckedIcon
-                style={{ color: "#1ED760", cursor: "pointer" }}
-                onClick={handlePlaylistRemoveClick}
-              />
-            ) : (
-              <PlaylistAddIcon onClick={handlePlaylistAddClick} />
-            )}
-          </div>
-        )}
-      </div>
-    )
-  );
+				<div className="song-exp">
+					<span className="song-title">{song.name}</span>
+					<span className="singer">
+						{song.singerName ? song.singerName : song.singer.name}
+					</span>
+				</div>
+				{location.pathname !== '/library' && (
+					<div className="actions">
+						{song.isLiked ? (
+							<PlaylistCheckedIcon
+								style={{ color: '#1ED760', cursor: 'pointer' }}
+								onClick={e => {
+									e.stopPropagation();
+									onToggleLike(song.id);
+								}}
+							/>
+						) : (
+							<PlaylistAddIcon
+								onClick={e => {
+									e.stopPropagation();
+									onToggleLike(song.id);
+								}}
+							/>
+						)}
+					</div>
+				)}
+			</div>
+		)
+	);
 }
 
 export default PlaylistSong;

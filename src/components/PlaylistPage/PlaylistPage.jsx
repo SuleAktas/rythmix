@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PlaylistSong from './components/PlaylistSong/PlaylistSong';
 import './PlaylistPage.css';
-import { useLikedPlaylists } from '../../contexts/LikedPlaylistContext';
 import FilledPlayIcon from '../SVG/FilledPlayIcon';
 import FilledPauseIcon from '../SVG/FilledPauseIcon';
 import ShareIcon from '../SVG/ShareIcon';
@@ -14,19 +13,29 @@ import FilledFavoriteIcon from '../SVG/FilledFavoriteIcon';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useSong } from '../../contexts/SongContext';
+import { usePlaying } from '../../contexts/PlayContext';
+import {
+	likePlaylist,
+	likeSong,
+	unlikePlaylist,
+	unlikeSong,
+} from '../../services/api';
 
 function PlaylistPage({ title }) {
 	const [tracks, setTracks] = useState([]);
+	const [playlist, setPlaylist] = useState({});
 	const [loading, setLoading] = useState(false);
-
+	const likedPlaylistId = '75c0e9e6-b107-4e0a-8996-5db7b6528361';
 	const fetchTracks = async albumId => {
-		const response = await fetch(
-			`https://api.jamendo.com/v3.0/tracks/?client_id=${
-				import.meta.env.VITE_JAMENDO_CLIENT_ID
-			}&album_id=${albumId}`
-		);
+		const url =
+			albumId === likedPlaylistId
+				? // ? `${import.meta.env.VITE_BACKEND_URL}user/likedSongs`
+				  `${import.meta.env.VITE_BACKEND_URL}playlist/${albumId}/songs`
+				: `${import.meta.env.VITE_BACKEND_URL}playlist/${albumId}/songs`;
+
+		const response = await fetch(url);
 		const data = await response.json();
-		return data.results;
+		return data;
 	};
 
 	const { id, songId } = useParams();
@@ -35,51 +44,76 @@ function PlaylistPage({ title }) {
 
 	const navigate = useNavigate();
 
-	const { likedPlaylists, setLikedPlaylists } = useLikedPlaylists();
+	const { setSong } = useSong();
 
-	const { song, setSong } = useSong();
-
-	const [isLiked, setIsLiked] = useState(
-		likedPlaylists.some(songPrev => songPrev.id === id)
-	);
+	const { isPlaying, setIsPlaying } = usePlaying();
 
 	const handleSongStatusChange = () => {
 		if (!songId) {
 			navigate(`/playlist/${id}/song/${tracks[0].id}`);
 			setSong({
 				...tracks[0],
-				isPlaying: true,
 			});
+			setIsPlaying(true);
 		} else {
 			setSong(prev => ({
 				...prev,
-				isPlaying: !prev.isPlaying,
 			}));
+			setIsPlaying(prev => !prev);
 		}
 	};
 
-	const handleOnLike = () => {
-		if (!isLiked) setLikedPlaylists(prev => [...prev, id]);
-		else {
-			setLikedPlaylists(prev => prev.filter(album => album !== id));
+	const handleOnLike = async () => {
+		setPlaylist({ ...playlist, isLiked: !playlist.isLiked });
+		try {
+			if (playlist.isLiked) {
+				await unlikePlaylist(playlist.id);
+			} else {
+				await likePlaylist(playlist.id);
+			}
+		} catch {
+			setPlaylist({ ...playlist, isLiked: playlist.isLiked });
 		}
-		setIsLiked(prev => !prev);
+	};
+	const handleToggleLike = async songId => {
+		setTracks(prevSongs =>
+			prevSongs.map(song =>
+				song.id === songId ? { ...song, isLiked: !song.isLiked } : song
+			)
+		);
+
+		const song = tracks.find(s => s.id === songId);
+		try {
+			if (song.isLiked) {
+				await unlikeSong(songId);
+			} else {
+				await likeSong(songId);
+			}
+		} catch (error) {
+			setTracks(prevSongs =>
+				prevSongs.map(s =>
+					s.id === songId ? { ...s, isLiked: song.isLiked } : s
+				)
+			);
+		}
 	};
 
 	useEffect(() => {
 		const fetchData = async () => {
 			const tracks = await fetchTracks(id);
 			if (songId) {
-				const song = tracks.find(e => e.id === songId);
+				let song;
+				song = tracks.songList.find(e => e.id === songId);
+
 				if (song) {
 					setSong({
 						...song,
-						isPlaying: true,
 					});
+					setIsPlaying(true);
 				}
 			}
-
-			setTracks(tracks);
+			setPlaylist(tracks);
+			setTracks(tracks.songList);
 			setLoading(false);
 		};
 
@@ -132,14 +166,7 @@ function PlaylistPage({ title }) {
 					</div>
 					<div className="playlist-img">
 						{!loading ? (
-							<img
-								src={
-									Number(id) !== 0
-										? tracks && tracks[0] && tracks[0].album_image
-										: '/images/LIKEDSONGS.jpeg'
-								}
-								alt={title}
-							></img>
+							<img src={playlist.imageUrl} alt={title}></img>
 						) : (
 							<Skeleton
 								baseColor="#2b2b2b"
@@ -153,11 +180,7 @@ function PlaylistPage({ title }) {
 					<div className="playlist-exp">
 						<h1>
 							{!loading ? (
-								Number(id) !== 0 ? (
-									tracks && tracks[0] && tracks[0].album_name
-								) : (
-									'Beğenilen Şarkılar'
-								)
+								playlist.singerName
 							) : (
 								<Skeleton
 									baseColor="#2b2b2b"
@@ -179,7 +202,7 @@ function PlaylistPage({ title }) {
 				</div>
 				<div className="playlist-buttons">
 					<div className="playlist-actions">
-						{isLiked ? (
+						{playlist.isLiked ? (
 							<FilledFavoriteIcon onClick={handleOnLike} />
 						) : (
 							<FavoriteIcon onClick={handleOnLike} />
@@ -189,7 +212,7 @@ function PlaylistPage({ title }) {
 					</div>
 
 					<div className="playlist-play">
-						{!song.isPlaying ? (
+						{!isPlaying ? (
 							<FilledPlayIcon
 								onClick={handleSongStatusChange}
 								color="#1ED760"
@@ -206,7 +229,12 @@ function PlaylistPage({ title }) {
 			<div className="playlist-songs">
 				{!loading
 					? tracks.map((track, index) => (
-							<PlaylistSong key={track.id} order={index + 1} song={track} />
+							<PlaylistSong
+								key={track.id}
+								order={index + 1}
+								song={track}
+								onToggleLike={handleToggleLike}
+							/>
 					  ))
 					: [...Array(10)].map(() => {
 							return songItemSkeleton();
